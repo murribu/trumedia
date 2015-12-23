@@ -13,7 +13,8 @@ use App\Models\RawDatum;
 
 class PitchesSeeder extends Seeder{
     public function run(){
-        $raw_data = RawDatum::chunk(200, function($raw_data){
+        $raw_data = RawDatum::whereRaw('id not in (select raw_data_id from pitches)')
+            ->chunk(200, function($raw_data){
             $raw_data->each(function($raw_datum){
                 $batter = Player::where('mlb_id', $raw_datum->batter_id)->first();
                 if (!$batter){
