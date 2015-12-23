@@ -57,6 +57,7 @@ CREATE TABLE `raw_data` (
   `batted_ball_distance` decimal(6,3) NOT NULL,
   `atbat_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `timestamp_utc` int(10) unsigned NOT NULL,
+  `processed_utc` int(10) unsigned NULL,
   PRIMARY KEY (`id`)
 );
 
