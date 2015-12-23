@@ -134,6 +134,9 @@ class PitchesSeeder extends Seeder{
                 if(!$pitch->save()){
                     dd($raw_datum);
                 }
+                if ($raw_datum->id % 1000 == 0){
+                    echo "Processed record number ".$raw_datum->id."\n\r";
+                }
             });
         });
     }
