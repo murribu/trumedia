@@ -9,6 +9,8 @@ use App\Models\PitchType;
 use App\Models\Pitch;
 use App\Models\PlateAppearanceResult;
 use App\Models\Player;
+use App\Models\PlayerPosition;
+use App\Models\Position;
 use App\Models\RawDatum;
 
 class PitchesSeeder extends Seeder{
@@ -97,6 +99,16 @@ class PitchesSeeder extends Seeder{
                 $pitch->catcher_id = $catcher->id;
                 $pitch->times_faced = $raw_datum->times_faced;
                 $pitch->batter_pos = $raw_datum->batter_pos;
+                $position = Position::where('abbr', $raw_datum->batter_pos)->first();
+                if ($position){
+                    $player_position = PlayerPosition::where('player_id', $batter->id)->where('position_id', $position->id)->first();
+                    if (!$player_position){
+                        $player_position = new PlayerPosition;
+                        $player_position->player_id = $batter->id;
+                        $player_position->position_id = $position->id;
+                        $player_position->save();
+                    }
+                }
                 $pitch->balls = $raw_datum->balls;
                 $pitch->strikes = $raw_datum->strikes;
                 $pitch->outs = $raw_datum->outs;

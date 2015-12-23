@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->command->info('plate_appearance_results table seeded');
         $this->call('BattedBallTypesSeeder');
         $this->command->info('batted_ball_types table seeded');
+        $this->call('PositionsSeeder');
+        $this->command->info('positions table seeded');
 
         $this->call('PitchesSeeder');
         $this->command->info('pitches table seeded');
