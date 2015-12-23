@@ -15,7 +15,7 @@ class PitchesSeeder extends Seeder{
     public function run(){
         $there_is_more = RawDatum::select('id')->whereRaw('id not in (select raw_data_id from pitches)')->first();
         while ($there_is_more){
-            $raw_data = RawDatum::whereRaw('id not in (select raw_data_id from pitches)')->take(200)->get();
+            $raw_data = RawDatum::where('processed_utc', '0')->take(200)->get();
             foreach($raw_data as $raw_datum){
                 $batter = Player::where('mlb_id', $raw_datum->batter_id)->first();
                 if (!$batter){
@@ -139,6 +139,7 @@ class PitchesSeeder extends Seeder{
                 if ($raw_datum->id % 1000 == 0){
                     echo "Processed record number ".$raw_datum->id."\n\r";
                 }
+                $raw_data->processed_utc = time();
             }
             $there_is_more = RawDatum::select('id')->whereRaw('id not in (select raw_data_id from pitches)')->first();
         }
