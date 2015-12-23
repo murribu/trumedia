@@ -60,7 +60,7 @@ CREATE TABLE `raw_data` (
   PRIMARY KEY (`id`)
 );
 
-LOAD DATA LOCAL INFILE 'C:\\Users\\Cory\\Downloads\\hackathon\\2013.csv'
+LOAD DATA LOCAL INFILE '/Users/murribu/Google\ Drive/TruMedia/2013.csv'
 INTO TABLE raw_data
 FIELDS TERMINATED BY ','
     ENCLOSED BY '"'
@@ -124,7 +124,7 @@ IGNORE 1 LINES
   `atbat_desc` ,
   `timestamp_utc`);
 
-LOAD DATA LOCAL INFILE 'C:\\Users\\Cory\\Downloads\\hackathon\\2014.csv'
+LOAD DATA LOCAL INFILE '/Users/murribu/Google\ Drive/TruMedia/2014.csv'
 INTO TABLE raw_data
 FIELDS TERMINATED BY ','
     ENCLOSED BY '"'
@@ -188,7 +188,7 @@ IGNORE 1 LINES
   `atbat_desc` ,
   `timestamp_utc`);
 
-LOAD DATA LOCAL INFILE 'C:\\Users\\Cory\\Downloads\\hackathon\\2015.csv'
+LOAD DATA LOCAL INFILE '/Users/murribu/Google\ Drive/TruMedia/2015.csv'
 INTO TABLE raw_data
 FIELDS TERMINATED BY ','
     ENCLOSED BY '"'

@@ -13,9 +13,10 @@ use App\Models\RawDatum;
 
 class PitchesSeeder extends Seeder{
     public function run(){
-        $raw_data = RawDatum::whereRaw('id not in (select raw_data_id from pitches)')
-            ->chunk(200, function($raw_data){
-            $raw_data->each(function($raw_datum){
+        $there_is_more = RawDatum::select('id')->whereRaw('id not in (select raw_data_id from pitches)')->first();
+        while ($there_is_more){
+            $raw_data = RawDatum::whereRaw('id not in (select raw_data_id from pitches)')->take(200)->get();
+            foreach($raw_data as $raw_datum){
                 $batter = Player::where('mlb_id', $raw_datum->batter_id)->first();
                 if (!$batter){
                     $batter = new Player;
@@ -138,7 +139,8 @@ class PitchesSeeder extends Seeder{
                 if ($raw_datum->id % 1000 == 0){
                     echo "Processed record number ".$raw_datum->id."\n\r";
                 }
-            });
-        });
+            }
+            $there_is_more = RawDatum::select('id')->whereRaw('id not in (select raw_data_id from pitches)')->first();
+        }
     }
 }

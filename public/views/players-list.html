@@ -1,0 +1,62 @@
+<div class="container" data-ng-controller="playersCtrl as pctrl">
+
+    <div class="block-header">
+        <ul class="actions m-t-20 hidden-xs">
+            <li class="dropdown" dropdown>
+                <a href="" dropdown-toggle>
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a href="">Privacy Settings</a>
+                    </li>
+                    <li>
+                        <a href="">Account Settings</a>
+                    </li>
+                    <li>
+                        <a href="">Other Settings</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+    
+    <div class="card">
+        <div class="card-header">
+            <h2>Players <small>2015 Stats</small></h2>
+             
+        </div>
+                
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-vmiddle table-condensed ng-table" show-filter="true">
+                    <thead>
+                        <tr>
+                            <th class="header sortable" ng-click="pctrl.currentSort('last_name')" ng-class="{'sort-asc': pctrl.currentSort == 'last_name', 'sort-desc': pctrl.currentSort == '-last_name'}"><div class="ng-table-header">Name</div></th>
+                            <th class="header sortable" ng-click="pctrl.currentSort('batter_hand')" ng-class="{'sort-asc': pctrl.currentSort == 'batter_hand', 'sort-desc': pctrl.currentSort == '-batter_hand'}"><div class="ng-table-header">Bats</div></th>
+                            <th class="header sortable" ng-click="pctrl.currentSort('pitcher_hand')" ng-class="{'sort-asc': pctrl.currentSort == 'pitcher_hand', 'sort-desc': pctrl.currentSort == '-pitcher_hand'}"><div class="ng-table-header">Pitches</div></th>
+                        </tr>
+                    </thead>
+                    
+                    <tr ng-repeat="player in pctrl.players | orderBy:pctrl.currentSort | filter:pctrl.filterPlayers | startFrom:(pctrl.currentPage-1)*pctrl.pageSize | limitTo:pctrl.pageSize">
+                        <td><a href="#/players/{{player.slug}}">{{player.name}}</a></td>
+                        <td>{{player.batter_hand}}</td>
+                        <td>{{player.pitcher_hand}}</td>
+                    </tr>
+                    
+                </table>
+                <div class="ng-table-pager">
+                    <ul class="pagination ng-table-pagination">
+                        <li ng-class="{'active' : $index === (pctrl.currentPage-1)*pctrl.pageSize}" ng-repeat="player in pctrl.players | filter:pctrl.filterPlayers" ng-if="$index % pctrl.pageSize === 0">
+                            <a ng-click="pctrl.changePage(($index / pctrl.pageSize) + 1)" href="">{{($index / pctrl.pageSize) + 1 | number:0}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

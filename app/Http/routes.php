@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/player/{id}', 'PlayerController@getPlayer');
+Route::get('/players', 'PlayerController@getPlayers');
+
+Route::get('/teams', 'PlayerController@getTeams');
 /*
 |--------------------------------------------------------------------------
 | Application Routes
