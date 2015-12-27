@@ -25,25 +25,32 @@
     
     <div class="card">
         <div class="card-header">
-            <h2>Players <small>2015 Stats</small></h2>
+            <h2>Players</h2>
              
         </div>
                 
         <div class="card-body">
+            <div class="row" style="padding:20px;">
+                <div class="col-sm-4"><div class="btn btn-primary btn-filter-players" id="btnShowAllPlayers" ng-click="pctrl.changePlayerFilter('');">Show All Players</div></div>
+                <div class="col-sm-4"><div class="btn btn-default btn-filter-players" id="btnShowOnlyPitchers" ng-click="pctrl.changePlayerFilter('P');">Show Only Pitchers</div></div>
+                <div class="col-sm-4"><div class="btn btn-default btn-filter-players" id="btnShowOnlyCatchers" ng-click="pctrl.changePlayerFilter('C');">Show Only Catchers</div></div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped table-vmiddle table-condensed ng-table" show-filter="true">
                     <thead>
                         <tr>
-                            <th class="header sortable" ng-click="pctrl.currentSort('last_name')" ng-class="{'sort-asc': pctrl.currentSort == 'last_name', 'sort-desc': pctrl.currentSort == '-last_name'}"><div class="ng-table-header">Name</div></th>
-                            <th class="header sortable" ng-click="pctrl.currentSort('batter_hand')" ng-class="{'sort-asc': pctrl.currentSort == 'batter_hand', 'sort-desc': pctrl.currentSort == '-batter_hand'}"><div class="ng-table-header">Bats</div></th>
-                            <th class="header sortable" ng-click="pctrl.currentSort('pitcher_hand')" ng-class="{'sort-asc': pctrl.currentSort == 'pitcher_hand', 'sort-desc': pctrl.currentSort == '-pitcher_hand'}"><div class="ng-table-header">Pitches</div></th>
+                            <th class="header sortable" ng-click="pctrl.changeSort('name')" ng-class="{'sort-asc': pctrl.currentSort == 'name', 'sort-desc': pctrl.currentSort == '-name'}"><div class="ng-table-header">Name</div></th>
+                            <th class="header sortable" ng-click="pctrl.changeSort('batter_hand')" ng-class="{'sort-asc': pctrl.currentSort == 'batter_hand', 'sort-desc': pctrl.currentSort == '-batter_hand'}"><div class="ng-table-header">Bats</div></th>
+                            <th class="header sortable" ng-click="pctrl.changeSort('pitcher_hand')" ng-class="{'sort-asc': pctrl.currentSort == 'pitcher_hand', 'sort-desc': pctrl.currentSort == '-pitcher_hand'}"><div class="ng-table-header">Pitches</div></th>
+                            <th class="header sortable"><div class="ng-table-header">Positions</div></th>
                         </tr>
                     </thead>
                     
                     <tr ng-repeat="player in pctrl.players | orderBy:pctrl.currentSort | filter:pctrl.filterPlayers | startFrom:(pctrl.currentPage-1)*pctrl.pageSize | limitTo:pctrl.pageSize">
-                        <td><a href="#/players/{{player.slug}}">{{player.name}}</a></td>
+                        <td><a href="#/players/{{player.id}}">{{player.name}}</a></td>
                         <td>{{player.batter_hand}}</td>
                         <td>{{player.pitcher_hand}}</td>
+                        <td>{{player.positions}}</td>
                     </tr>
                     
                 </table>

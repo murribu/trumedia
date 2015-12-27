@@ -1,0 +1,28 @@
+<div class="container" data-ng-controller="playerCtrl as pctrl">
+
+    <div class="block-header">
+        <h2>{{pctrl.player.name}}</h2>
+    </div>
+
+    <div class="card" id="profile-main">
+        <div class="pm-overview c-overflow">
+            <div class="pmo-block pmo-contact hidden-xs">
+                <h2>These reports are available for {{pctrl.player.name}}</h2>
+                <ul>
+                    <li ng-show="(',' + pctrl.player.positions + ',').indexOf(',C,') > -1"><i class="zmdi zmdi-info-outline"></i><a href="/#/catcherframing/{{ pctrl.player.id }}">Catcher Framing</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="pm-body clearfix">
+            <ul class="tab-nav tn-justified">
+                <li ng-class="{'active': pctrl.activeTab == 'catcherframing'}" class="btn-wave"><a ng-click="pctrl.activeTab = 'catcherframing'" href="#/players/{{ pctrl.player.id }}">Catcher Framing</a></li>
+            </ul>
+            <div>
+                <div class="row"><div class="col-md-4"><small>(Strikes gained - Strikes Lost) / (Pitches Received)</small></div></div>
+                <div class="card-body">
+                    <div id="line-chart-catcher-framing-by-month" data-line-chart-one class="flot-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

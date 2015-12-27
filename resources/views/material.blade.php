@@ -99,6 +99,7 @@
 
         <!-- Using below vendors in order to avoid misloading on resolve -->
         <script src="vendors/bower_components/flot/jquery.flot.js"></script>
+        <script src="vendors/bower_components/flot/jquery.flot.time.js"></script>
         <script src="vendors/bower_components/flot.curvedlines/curvedLines.js"></script>
         <script src="vendors/bower_components/flot/jquery.flot.resize.js"></script>
         <script src="vendors/bower_components/moment/min/moment.min.js"></script>

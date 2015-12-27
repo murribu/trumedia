@@ -15,18 +15,35 @@ use App\Models\Player;
 class PlayerController extends Controller {
     
     function getPlayer($id){
-        $player = Player::find($id);
+        $player = Player::where('players.id', $id)
+            ->leftJoin('player_positions', 'players.id', '=', 'player_positions.player_id')
+            ->leftJoin('positions', 'positions.id', '=', 'player_positions.position_id')
+            ->selectRaw('players.id, players.mlb_id, players.name, players.batter_hand, players.pitcher_hand, group_concat(ifnull(positions.abbr, \'P\') order by positions.id) positions')
+            ->groupBy('players.id')
+            ->first();
+        
+        $query = "select p.id, year(game_date) y, month(game_date) m
+            , sum(case when abs(p.px) <= 8.5/12 and p.pz <= p.szt and p.pz >= p.szb and pr.id = 7 then -1 
+                 when (abs(p.px) > 8.5/12 or p.pz between p.szt and p.szb) and pr.id = 2 then 1
+                 else 0 end)*100/count(p.id) score,
+            count(p.id) pitch_count
+            from pitches p
+            left join pitch_results pr on p.pitch_result_id = pr.id
+            where 1=1
+            and p.pitch_result_id in (2,7)
+            and catcher_id = ".$player->id."
+            group by year(game_date), month(game_date);";
+        $player->catcherframingscorebymonth = DB::select(DB::raw($query));
         
         return $player;
     }
     
     function getPlayers(){
-        DB::enableQueryLog();
-        $players = Player::leftJoin('pitches', 'players.name', 'players.id', '=', 'catcher_id')
-            ->selectRaw('players.id, players.mlb_id, players.batter_hand, players.pitcher_hand, case when pitches.catcher_id is null then 0 else 1 end is_catcher')
+        $players = Player::leftJoin('player_positions', 'players.id', '=', 'player_positions.player_id')
+            ->leftJoin('positions', 'positions.id', '=', 'player_positions.position_id')
+            ->selectRaw('players.id, players.mlb_id, players.name, players.batter_hand, players.pitcher_hand, group_concat(ifnull(positions.abbr, \'P\') order by positions.id) positions')
             ->groupBy('players.id')
             ->get();
-        dd(DB::getQueryLog());
         return $players;
     }
     

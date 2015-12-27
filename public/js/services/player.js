@@ -19,7 +19,7 @@ materialAdmin
         this.getPlayer = function(id) {
             return $http({
                 method: 'get',
-                url: "/players/" + id
+                url: "/player/" + id
               });
         };
     }])
