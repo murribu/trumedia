@@ -9,20 +9,35 @@
             <div class="pmo-block pmo-contact hidden-xs">
                 <h2>These reports are available for {{pctrl.player.name}}</h2>
                 <ul>
-                    <li ng-show="(',' + pctrl.player.positions + ',').indexOf(',C,') > -1"><i class="zmdi zmdi-info-outline"></i><a href="/#/catcherframing/{{ pctrl.player.id }}">Catcher Framing</a></li>
+                    <li ng-show="(',' + pctrl.player.positions + ',').indexOf(',C,') > -1"><i class="zmdi zmdi-info-outline"></i><a href="/#/reports/catcherframing/{{ pctrl.player.id }}">Catcher Framing</a></li>
+                    <li ng-show="(',' + pctrl.player.positions + ',').indexOf(',P,') > -1"><i class="zmdi zmdi-info-outline"></i><a href="/#/reports/velocitydiff/{{ pctrl.player.id }}">Velocity Difference</a></li>
+                    <li ng-show="pctrl.player.battedballdistancebymonth && pctrl.player.battedballdistancebymonth.length > 0"><i class="zmdi zmdi-info-outline"></i><a href="/#/reports/battedballdistance/{{ pctrl.player.id }}">Batted Ball Distance</a></li>
                 </ul>
             </div>
         </div>
         <div class="pm-body clearfix">
             <ul class="tab-nav tn-justified">
-                <li ng-class="{'active': pctrl.activeTab == 'catcherframing'}" class="btn-wave"><a ng-click="pctrl.activeTab = 'catcherframing'" href="#/players/{{ pctrl.player.id }}">Catcher Framing</a></li>
+                <li ng-class="{'active': pctrl.activeTab == 'catcherframing'}" class="btn-wave" ng-show="pctrl.player.catcherframingscorebymonth && pctrl.player.catcherframingscorebymonth.length > 0"><a ng-click="pctrl.activeTab = 'catcherframing'" href="#/players/{{ pctrl.player.id }}">Catcher Framing</a></li>
+                <li ng-class="{'active': pctrl.activeTab == 'velocitydiff'}" class="btn-wave" ng-show="pctrl.player.velocitydiffbymonth && pctrl.player.velocitydiffbymonth.length > 0"><a ng-click="pctrl.activeTab = 'velocitydiff'" href="#/players/{{ pctrl.player.id }}">Pitch Velocity Difference</a></li>
+                <li ng-class="{'active': pctrl.activeTab == 'battedballdistance'}" class="btn-wave" ng-show="pctrl.player.battedballdistancebymonth && pctrl.player.battedballdistancebymonth.length > 0"><a ng-click="pctrl.activeTab = 'battedballdistance'" href="#/players/{{ pctrl.player.id }}">Batted Ball Distance</a></li>
             </ul>
-            <div>
-                <div class="row"><div class="col-md-4"><small>(Strikes gained - Strikes Lost) / (Pitches Received)</small></div></div>
+            <div ng-show="pctrl.activeTab == 'catcherframing'">
+                <div class="row"><div class="col-md-8">(Strikes gained - Strikes Lost) / (Pitches Received)</div></div>
                 <div class="card-body">
-                    <div id="line-chart-catcher-framing-by-month" data-line-chart-one class="flot-chart"></div>
+                    <div id="line-chart-catcher-framing-by-month" data-line-chart-one class="flot-chart" units="%"></div>
                 </div>
             </div>
+            <div ng-show="pctrl.activeTab == 'velocitydiff'">
+                <div class="row"><div class="col-md-8">Average Fastball Velocity - Average Changeup Velocity</div></div>
+                <div class="card-body">
+                    <div id="line-chart-velocity-difference-by-month" data-line-chart-one class="flot-chart" units="mph"></div>
+                </div>
+            </div>
+            <div ng-show="pctrl.activeTab == 'battedballdistance'">
+                <div class="row"><div class="col-md-8">Average Batted Ball Distance</div></div>
+                <div class="card-body">
+                    <div id="line-chart-batted-ball-distance-by-month" data-line-chart-one class="flot-chart" units="feet"></div>
+                </div></div>
         </div>
     </div>
 </div>
