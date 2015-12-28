@@ -38,6 +38,20 @@ class PlayerController extends Controller {
         return $player;
     }
     
+    function getArbitraryPlayers($count){
+        $count = intval($count) > 0 ? intval($count) : 10;
+        
+        $players = Player::leftJoin('player_positions', 'players.id', '=', 'player_positions.player_id')
+            ->leftJoin('positions', 'positions.id', '=', 'player_positions.position_id')
+            ->selectRaw('players.id, players.mlb_id, players.name, players.batter_hand, players.pitcher_hand, group_concat(ifnull(positions.abbr, \'P\') order by positions.id) positions')
+            ->groupBy('players.id')
+            ->orderBy(DB::raw('RAND()'))
+            ->take($count)
+            ->get();
+        
+        return $players;
+    }
+    
     function getPlayers(){
         $players = Player::leftJoin('player_positions', 'players.id', '=', 'player_positions.player_id')
             ->leftJoin('positions', 'positions.id', '=', 'player_positions.position_id')

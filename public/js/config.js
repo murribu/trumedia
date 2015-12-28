@@ -11,7 +11,7 @@ materialAdmin
         
             .state ('home', {
                 url: '/home',
-                templateUrl: 'views/home.html',
+                templateUrl: 'views/dashboard.html',
                 resolve: {
                     loadPlugin: function($ocLazyLoad) {
                         return $ocLazyLoad.load ([
