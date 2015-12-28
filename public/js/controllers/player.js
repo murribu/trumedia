@@ -12,6 +12,8 @@ materialAdmin
                 self.activeTab = 'catcherframing';
             }else if (self.player.velocitydiffbymonth.length > 0){
                 self.activeTab = 'velocitydiff';
+            }else if (self.player.battedballdistancebymonth.length > 0){
+                self.activeTab = 'battedballdistance';
             }
             var options = {
                 series: {
