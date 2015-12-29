@@ -51,7 +51,7 @@ materialAdmin
     // =========================================================================
     // Header
     // =========================================================================
-    .controller('headerCtrl', function($timeout, messageService){
+    .controller('headerCtrl', function($timeout){
     
          // Top Search
         this.openSearch = function(){
@@ -63,13 +63,6 @@ materialAdmin
             angular.element('#header').removeClass('search-toggled');
         }
         
-        // Get messages and notification for header
-        this.img = messageService.img;
-        this.user = messageService.user;
-        this.user = messageService.text;
-
-        this.messageResult = messageService.getMessage(this.img, this.user, this.text);
-
 
         //Clear Notification
         this.clearNotification = function($event) {

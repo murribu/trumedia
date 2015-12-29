@@ -1,10 +1,8 @@
 materialAdmin
 
     .service('reportService', ['$http', function($http){
-        this.getCatcherFramingReport = function(slug) {
-            var sent = {
-                slug: slug
-            };
+        this.getCatcherFramingReport = function(filters) {
+            var sent = filters;
             
             return $http({
                 method: 'post',

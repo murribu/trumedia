@@ -15,13 +15,15 @@
         <link href="vendors/bower_components/angular-loading-bar/src/loading-bar.css" rel="stylesheet">
 
         <!-- CSS -->
+        <!--This app-level div is used in lazyLoading (public/js/config.js) -->
+        <div id="app-level"></div>
+        
         <link href="css/app.css" rel="stylesheet">
         <link href="css/demo.css" rel="stylesheet">
 
     </head>
 
     <body data-ng-class="{ 'sw-toggled': mactrl.layoutType === '1', 'modal-open': mactrl.sidebarToggle.left === true }">
-
 
         <data ui-view></data>
 

@@ -4,29 +4,94 @@
             <h2>Customize Your Report</h2>
         </div>
         <div class="card-body card-padding">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label>Minimum Pitch Count</label>
-                        <div class="fg-line">
-                            <input type="number" class="form-control" ng-model="rctrl.minimumPitchCount">
+            <ul class="tab-nav tn-justified" style="margin-bottom: 24px;">
+                <li ng-class="{'active': rctrl.activeTab == 'basic'}" class="btn-wave">
+                    <a ng-click="rctrl.activeTab = 'basic'" href="#/reports/catcher-framing">Basic Filters</a>
+                </li>
+                <li ng-class="{'active': rctrl.activeTab == 'additional'}" class="btn-wave">
+                    <a ng-click="rctrl.activeTab = 'additional'" href="#/reports/catcher-framing">Additional Filters</a>
+                </li>
+            </ul>
+            <div ng-show="rctrl.activeTab == 'basic'">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Minimum Pitch Count</label>
+                            <div class="fg-line">
+                                <input type="number" class="form-control" ng-model="rctrl.minimumPitchCount">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Player Search</label>
+                            <div class="fg-line">
+                                <input type="text" class="form-control" ng-model="rctrl.playerSearch" placeholder="Posey">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label>Player Search</label>
-                        <div class="fg-line">
-                            <input type="text" class="form-control" ng-model="rctrl.playerSearch" placeholder="Posey">
+            </div>
+            <div ng-show="rctrl.activeTab == 'additional'">
+                <div class="row" style="margin:5px;">
+                    <p class="f-500 c-black m-b-5">Innings</p>
+                    <small class="c-gray">{{ rctrl.additionalFilters.inningMin }} - {{ rctrl.additionalFilters.inningMax }}</small>
+                    <br/>
+                    <br/>
+                    <div style="padding:0px 12px 12px 12px;">
+                        <div slider class="input-slider-range" ng-from="rctrl.additionalFilters.inningMin" ng-to="rctrl.additionalFilters.inningMax" start=1 end=20></div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="col-sm-4 checkbox">
+                        <p class="f-500 c-black m-b-5">Man on...</p>
+                        <div class="form-group" title="If checked, the report will include pitches where there was a man on first. If unchecked, it won't care whether there was a man on first.">
+                            <label>First
+                                <input type="checkbox" ng-model="rctrl.additionalFilters.manOnFirst" >
+                                <i class="input-helper"></i>
+                            </label>
+                        </div>
+                        <div class="form-group" title="If checked, the report will include pitches where there was a man on second. If unchecked, it won't care whether there was a man on second.">
+                            <label>Second
+                                <input type="checkbox" ng-model="rctrl.additionalFilters.manOnSecond">
+                                <i class="input-helper"></i>
+                            </label>
+                        </div>
+                        <div class="form-group" title="If checked, the report will include pitches where there was a man on third. If unchecked, it won't care whether there was a man on third.">
+                            <label>Third
+                                <input type="checkbox" ng-model="rctrl.additionalFilters.manOnThird">
+                                <i class="input-helper"></i>
+                            </label>
                         </div>
                     </div>
+                    <div class="col-sm-2" style="margin-top:10px;">
+                        <p class="f-500 c-black m-b-5">Outs</p>
+                        <div class="form-group">
+                            <select multiple="true" ng-model="rctrl.additionalFilters.outs" ng-options="n for n in rctrl.range(0,2)" style="width:80px;"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2" style="margin-top:10px;">
+                        <p class="f-500 c-black m-b-5">Balls</p>
+                        <div class="form-group">
+                            <select multiple="true" ng-model="rctrl.additionalFilters.balls" ng-options="n for n in rctrl.range(0,3)" style="width:80px;"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2" style="margin-top:10px;">
+                        <p class="f-500 c-black m-b-5">Strikes</p>
+                        <div class="form-group">
+                            <select multiple="true" ng-model="rctrl.additionalFilters.strikes" ng-options="n for n in rctrl.range(0,2)" style="width:80px;"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn btn-primary" style="float:right;" ng-click="rctrl.rerunReport()">Re-run Report</div>
                 </div>
             </div>
         </div>
     </div>
     <div class="card">
         <div class="card-header">
-            <h2>Results</h2>
+            <h2>Results</h2> <div><small>Score = (Strikes gained - Strikes Lost) / (Pitches Received)</div></small><div><small ng-show="!rctrl.arraysEqual(rctrl.additionalFilters, rctrl.initialAdditionalFilters);" style="background-color: lightyellow;">These data do not match your filters. Please re-run the report to see your new data.</small></div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -44,7 +109,7 @@
                         <td>{{result.score}}</td>
                         <td>{{result.pitch_count}}</td>
                     </tr>
-                    
+                    <tr ng-hide="(rctrl.results | filter:rctrl.filterResults).length > 0 && !rctrl.runningReport"><td colspan="3">No results. Check your <a ng-click="rctrl.activeTab = 'basic'" href="/#/reports/catcher-framing">basic filters</a>. You may be filtering everyone out.</td></tr>
                 </table>
                 <div class="ng-table-pager">
                     <ul class="pagination ng-table-pagination">
