@@ -22,19 +22,19 @@
                 <li ng-class="{'active': pctrl.activeTab == 'battedballdistance'}" class="btn-wave" ng-show="pctrl.player.battedballdistancebymonth && pctrl.player.battedballdistancebymonth.length > 0"><a ng-click="pctrl.activeTab = 'battedballdistance'" href="#/players/{{ pctrl.player.id }}">Batted Ball Distance</a></li>
             </ul>
             <div ng-show="pctrl.activeTab == 'catcherframing'">
-                <div class="row"><div class="col-md-8">(Strikes gained - Strikes Lost) / (Pitches Received)</div></div>
+                <div class="row" style="margin-left:-5px;"><div class="col-md-8">(Strikes gained - Strikes Lost) / (Pitches Received)</div></div>
                 <div class="card-body">
                     <div id="line-chart-catcher-framing-by-month" data-line-chart-one class="flot-chart" units="%"></div>
                 </div>
             </div>
             <div ng-show="pctrl.activeTab == 'velocitydiff'">
-                <div class="row"><div class="col-md-8">Average Fastball Velocity - Average Changeup Velocity</div></div>
+                <div class="row" style="margin-left:-5px;"><div class="col-md-8">Average Fastball Velocity - Average Changeup Velocity</div></div>
                 <div class="card-body">
                     <div id="line-chart-velocity-difference-by-month" data-line-chart-one class="flot-chart" units="mph"></div>
                 </div>
             </div>
             <div ng-show="pctrl.activeTab == 'battedballdistance'">
-                <div class="row"><div class="col-md-8">Average Batted Ball Distance</div></div>
+                <div class="row" style="margin-left:-5px;"><div class="col-md-8">Average Batted Ball Distance</div></div>
                 <div class="card-body">
                     <div id="line-chart-batted-ball-distance-by-month" data-line-chart-one class="flot-chart" units="feet"></div>
                 </div></div>

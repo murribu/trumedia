@@ -30,7 +30,7 @@ class PlayerController extends Controller {
             from pitches p
             left join pitch_results pr on p.pitch_result_id = pr.id
             where 1=1
-            and p.pitch_result_id in (2,7)
+            and pr.id in (2,7)
             and catcher_id = ".$player->id."
             group by year(game_date), month(game_date);";
         $player->catcherframingscorebymonth = DB::select(DB::raw($query));
@@ -45,7 +45,7 @@ class PlayerController extends Controller {
             group by year(game_date), month(game_date)";
         $player->velocitydiffbymonth = DB::select(DB::raw($query));
         
-        $query = "select avg(batted_ball_distance) dist, count(id) c, month(game_date) m, year(game_date) y
+        $query = "select avg(nullif(batted_ball_distance,0)) dist, count(id) c, month(game_date) m, year(game_date) y
             from pitches
             where batter_id = ".$player->id."
             group by year(game_date), month(game_date)";

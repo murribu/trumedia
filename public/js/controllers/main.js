@@ -4,9 +4,6 @@ materialAdmin
     // =========================================================================
 
     .controller('materialadminCtrl', function($timeout, $state, growlService){
-        //Welcome Message
-        growlService.growl('Welcome back Mallinda!', 'inverse')
-        
         
         // Detact Mobile Browser
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {

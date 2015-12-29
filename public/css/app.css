@@ -15780,10 +15780,13 @@ hr.fc-divider {
 }
 .sortable .ng-table-header:before {
   font-family: 'Material-Design-Iconic-Font';
+  /*
   position: absolute;
   right: 0;
   top: -2px;
+  */
   font-size: 17px;
+  padding-right: 6px;
 }
 .sortable.sort-desc .ng-table-header:before {
   content: "\f1ce";

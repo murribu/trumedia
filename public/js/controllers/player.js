@@ -76,7 +76,7 @@ materialAdmin
             for (r in balldist){
                 balldistdata[r] = [gd(balldist[r]['y'],balldist[r]['m'],1),balldist[r]['dist']];
             }
-            var dataset3 = [{label: "Velocity Difference", data:balldistdata}];
+            var dataset3 = [{label: "Batted Ball Distance", data:balldistdata}];
             $timeout(function(){
                 if ($("#line-chart-catcher-framing-by-month")){
                     $.plot($("#line-chart-catcher-framing-by-month"), dataset1, options);

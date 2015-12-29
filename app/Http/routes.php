@@ -15,12 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/* Players */
 Route::get('/players', 'PlayerController@getPlayers');
 Route::get('/players/arbitrary/{count}', 'PlayerController@getArbitraryPlayers');
 Route::get('/player/{id}', 'PlayerController@getPlayer');
 
-
-Route::get('/teams', 'PlayerController@getTeams');
+/* Reports */
+Route::post('/report/catcherframing', 'ReportController@postCatcherFramingReport');
+Route::get('/report/catcherframing', 'ReportController@postCatcherFramingReport');
 /*
 |--------------------------------------------------------------------------
 | Application Routes

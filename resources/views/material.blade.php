@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Material Admin</title>
+        <title>Cory Martin -- TruMedia Hackathon</title>
 
         <!-- Vendor CSS -->
         <link href="vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
@@ -120,9 +120,11 @@
         <script src="js/controllers/table.js"></script>
         <script src="js/controllers/player.js"></script>
         <script src="js/controllers/players.js"></script>
+        <script src="js/controllers/reportsCatcherFraming.js"></script>
 
         <!-- Services -->
         <script src="js/services/player.js"></script>
+        <script src="js/services/report.js"></script>
 
         <!-- Filters -->
         <script src="js/filters/startFrom.js"></script>
