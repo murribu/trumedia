@@ -28,4 +28,25 @@ materialAdmin
                 url: "/player/" + id
               });
         };
+        
+        this.getPlayerCatcherFraming = function(id) {
+            return $http({
+                method: 'get',
+                url: "/player/" + id + '/catcherframing'
+              });
+        };
+        
+        this.getPlayerVelocityDiff = function(id) {
+            return $http({
+                method: 'get',
+                url: "/player/" + id + '/velocitydiff'
+              });
+        };
+        
+        this.getPlayerBattedBallDistance = function(id) {
+            return $http({
+                method: 'get',
+                url: "/player/" + id + '/battedballdistance'
+              });
+        };
     }])

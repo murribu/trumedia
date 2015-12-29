@@ -19,10 +19,13 @@ Route::get('/', function () {
 Route::get('/players', 'PlayerController@getPlayers');
 Route::get('/players/arbitrary/{count}', 'PlayerController@getArbitraryPlayers');
 Route::get('/player/{id}', 'PlayerController@getPlayer');
+Route::get('/player/{id}/catcherframing', 'PlayerController@getPlayerCatcherFramingByMonth');
+Route::get('/player/{id}/velocitydiff', 'PlayerController@getPlayerVelocityDifferenceByMonth');
+Route::get('/player/{id}/battedballdistance', 'PlayerController@getPlayerBattedBallDistanceByMonth');
 
 /* Reports */
 Route::post('/report/catcherframing', 'ReportController@postCatcherFramingReport');
-Route::get('/report/catcherframing', 'ReportController@postCatcherFramingReport');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
