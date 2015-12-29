@@ -4,9 +4,17 @@ materialAdmin
         self.player = [];
         self.activeTab = 'stats';
         self.currentCareerSort = 'season';
+        self.activeTab = '';
         
         playerService.getPlayer($location.path().substr(9,999)).success(function(data){
             self.player = data;
+            if (self.player.catcherframingscorebymonth.length > 0){
+                self.activeTab = 'catcherframing';
+            }else if (self.player.velocitydiffbymonth.length > 0){
+                self.activeTab = 'velocitydiff';
+            }else if (self.player.battedballdistancebymonth.length > 0){
+                self.activeTab = 'battedballdistance';
+            }
             var options = {
                 series: {
                     lines: {
@@ -49,15 +57,41 @@ materialAdmin
                 }
             };
             
-            var raw = self.player.catcherframingscorebymonth;
-            var chartdata = [];
-            for(r in raw){
-                chartdata[r] = [gd(raw[r]['y'],raw[r]['m'],1),raw[r]['score']];
+            var framing = self.player.catcherframingscorebymonth;
+            var framedata = [];
+            for(r in framing){
+                framedata[r] = [gd(framing[r]['y'],framing[r]['m'],1),framing[r]['score']];
             }
-            var dataset = [{label: "Framing Percentage", data:chartdata}];
+            var dataset1 = [{label: "Framing Percentage", data:framedata}];
+            
+            var velodiff = self.player.velocitydiffbymonth;
+            var velodiffdata = [];
+            for (r in velodiff){
+                velodiffdata[r] = [gd(velodiff[r]['y'],velodiff[r]['m'],1),velodiff[r]['diff']];
+            }
+            var dataset2 = [{label: "Velocity Difference", data:velodiffdata}];
+            
+            var balldist = self.player.battedballdistancebymonth;
+            var balldistdata = [];
+            for (r in balldist){
+                balldistdata[r] = [gd(balldist[r]['y'],balldist[r]['m'],1),balldist[r]['dist']];
+            }
+            var dataset3 = [{label: "Velocity Difference", data:balldistdata}];
             $timeout(function(){
-                $.plot($("#line-chart-catcher-framing-by-month"), dataset, options);
-                $("#line-chart-catcher-framing-by-month").UseTooltip();
+                if ($("#line-chart-catcher-framing-by-month")){
+                    $.plot($("#line-chart-catcher-framing-by-month"), dataset1, options);
+                    $("#line-chart-catcher-framing-by-month").UseTooltip();
+                }
+                if ($("#line-chart-velocity-difference-by-month")){
+                    options.yaxis.axisLabel = "Velocity Difference from Fastball to Changeup";
+                    $.plot($("#line-chart-velocity-difference-by-month"), dataset2, options);
+                    $("#line-chart-velocity-difference-by-month").UseTooltip();
+                }
+                if ($("#line-chart-batted-ball-distance-by-month")){
+                    options.yaxis.axisLabel = "Batted Ball Distance";
+                    $.plot($("#line-chart-batted-ball-distance-by-month"), dataset3, options);
+                    $("#line-chart-batted-ball-distance-by-month").UseTooltip();
+                }
             });
         });
         
@@ -90,7 +124,7 @@ $.fn.UseTooltip = function () {
                 showTooltip(item.pageX,
                 item.pageY,
                 color,
-                "<strong>" + item.series.label + "</strong><br>" + monthNames[month] + " : <strong>" + y + "</strong>(%)");
+                "<strong>" + item.series.label + "</strong><br>" + monthNames[month] + " : <strong>" + y + "</strong>(" + $(this).attr('units') + ")");
                 
             }
         } else {

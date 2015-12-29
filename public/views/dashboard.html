@@ -1,0 +1,57 @@
+<header id="header" data-ng-include="'template/header.html'" data-ng-controller="headerCtrl as hctrl"></header>
+
+<section id="main">
+    <aside id="sidebar" data-ng-include="'template/sidebar-left.html'" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }"></aside>
+
+    <section id="content">
+
+        <div class="container" data-ng-controller="dashboardCtrl as dctrl">
+            <div class="block-header">
+                <h2>Dashboard</h2>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <!-- Recent Items -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Player Pages <small>Here are 5 players. Dive in!</small></h2>
+                        </div>
+
+                        <div class="card-body m-t-0">
+                            <table class="table table-inner table-vmiddle">
+                                <tbody>
+                                    <tr data-ng-repeat="p in dctrl.players">
+                                        <td><a href="/#/players/{{p.id}}">{{ p.name }}</a></td>
+                                        <td>{{p.positions}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="recent-items-chart" class="flot-chart" data-line-chart></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <!-- Recent Items -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Reports</h2>
+                        </div>
+
+                        <div class="card-body m-t-0">
+                            <table class="table table-inner table-vmiddle">
+                                <tbody>
+                                    <tr data-ng-repeat="r in dctrl.reports">
+                                        <td><a href="/#/reports/{{r.slug}}">{{ r.name }}</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<footer id="footer" data-ng-include="'template/footer.html'"></footer>

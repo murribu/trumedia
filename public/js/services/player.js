@@ -8,6 +8,12 @@ materialAdmin
               });
         };
         
+        this.getArbitraryPlayers = function(c) {
+            return $http({
+                method: 'get',
+                url: "/players/arbitrary/" + c
+            });
+        }
         
         this.getTeams = function() {
             return $http({

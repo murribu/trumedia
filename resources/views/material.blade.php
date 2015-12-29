@@ -14,7 +14,6 @@
         <link href="vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
         <link href="vendors/bower_components/angular-loading-bar/src/loading-bar.css" rel="stylesheet">
 
-
         <!-- CSS -->
         <link href="css/app.css" rel="stylesheet">
         <link href="css/demo.css" rel="stylesheet">
@@ -117,6 +116,7 @@
         <script src="js/services.js"></script>
         <script src="js/templates.js"></script>
         <script src="js/controllers/ui-bootstrap.js"></script>
+        <script src="js/controllers/dashboard.js"></script>
         <script src="js/controllers/table.js"></script>
         <script src="js/controllers/player.js"></script>
         <script src="js/controllers/players.js"></script>

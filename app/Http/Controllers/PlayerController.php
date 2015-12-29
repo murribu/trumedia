@@ -35,7 +35,37 @@ class PlayerController extends Controller {
             group by year(game_date), month(game_date);";
         $player->catcherframingscorebymonth = DB::select(DB::raw($query));
         
+        $query = "select year(game_date) y, month(game_date) m
+            , sum(case when pitch_type_id in (3,4,5) then release_velocity else 0 end)/sum(case when pitch_type_id in (3,4,5) then 1 else 0 end) fbvelo
+            , sum(case when pitch_type_id in (1) then release_velocity else 0 end)/sum(case when pitch_type_id in (1) then 1 else 0 end) cuvelo
+            ,sum(case when pitch_type_id in (3,4,5) then release_velocity else 0 end)/sum(case when pitch_type_id in (3,4,5) then 1 else 0 end) - sum(case when pitch_type_id in (1) then release_velocity else 0 end)/sum(case when pitch_type_id in (1) then 1 else 0 end) diff
+            from pitches p
+            where p.pitcher_id = ".$player->id."
+            and p.pitch_type_id in (1,3,4,5)
+            group by year(game_date), month(game_date)";
+        $player->velocitydiffbymonth = DB::select(DB::raw($query));
+        
+        $query = "select avg(batted_ball_distance) dist, count(id) c, month(game_date) m, year(game_date) y
+            from pitches
+            where batter_id = ".$player->id."
+            group by year(game_date), month(game_date)";
+        $player->battedballdistancebymonth = DB::select(DB::raw($query));
+        
         return $player;
+    }
+    
+    function getArbitraryPlayers($count){
+        $count = intval($count) > 0 ? intval($count) : 10;
+        
+        $players = Player::leftJoin('player_positions', 'players.id', '=', 'player_positions.player_id')
+            ->leftJoin('positions', 'positions.id', '=', 'player_positions.position_id')
+            ->selectRaw('players.id, players.mlb_id, players.name, players.batter_hand, players.pitcher_hand, group_concat(ifnull(positions.abbr, \'P\') order by positions.id) positions')
+            ->groupBy('players.id')
+            ->orderBy(DB::raw('RAND()'))
+            ->take($count)
+            ->get();
+        
+        return $players;
     }
     
     function getPlayers(){

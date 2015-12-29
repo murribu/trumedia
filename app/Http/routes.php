@@ -16,7 +16,9 @@ Route::get('/', function () {
 });
 
 Route::get('/players', 'PlayerController@getPlayers');
+Route::get('/players/arbitrary/{count}', 'PlayerController@getArbitraryPlayers');
 Route::get('/player/{id}', 'PlayerController@getPlayer');
+
 
 Route::get('/teams', 'PlayerController@getTeams');
 /*
