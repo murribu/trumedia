@@ -58,6 +58,20 @@ materialAdmin
         
 
             //------------------------------
+            // REPORTS
+            //------------------------------
+        
+            .state ('reports', {
+                url: '/reports',
+                templateUrl: 'views/common.html'
+            })
+            
+            .state ('reports.catcher-framing', {
+                url: '/catcher-framing',
+                templateUrl: 'views/reports-catcher-framing.html'
+            })
+
+            //------------------------------
             // TYPOGRAPHY
             //------------------------------
         

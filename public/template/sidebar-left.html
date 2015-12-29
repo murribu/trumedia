@@ -32,11 +32,15 @@
         <li data-ui-sref-active="active">
             <a data-ui-sref="home" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-home"></i> Home</a>
         </li>
-        <li data-ui-sref-active="active">
-            <a data-ui-sref="typography" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-format-underlined"></i> Typography</a>
-        </li>
         <li data-ng-class="{ 'active toggled': mactrl.$state.includes('players') }">
             <a data-ui-sref="players.list" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-view-list"></i> Players</a>
+        </li>
+        <li class="sub-menu" data-ng-class="{ 'active toggled': mactrl.$state.includes('reports') }">
+            <a href="" toggle-submenu><i class="zmdi zmdi-collection-text"></i> Reports</a>
+
+            <ul>
+                <li><a data-ui-sref-active="active" data-ui-sref="reports.catcher-framing" data-ng-click="mactrl.sidebarStat($event)">Catcher Framing</a></li>
+            </ul>
         </li>
         <li class="sub-menu" data-ng-class="{ 'active toggled': mactrl.$state.includes('widgets') }">
             <a href="" toggle-submenu><i class="zmdi zmdi-widgets"></i> Widgets</a>
