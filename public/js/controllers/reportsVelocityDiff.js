@@ -1,10 +1,10 @@
 materialAdmin
-    .controller('reportsCatcherFramingCtrl', function($scope, $timeout, reportService) {
+    .controller('reportsVelocityDiffCtrl', function($scope, $timeout, reportService) {
         var self = this;
         self.results = [];
         self.pageSize = 20;
         self.currentPage = 1;
-        self.currentSort = '-score';
+        self.currentSort = '-diff';
         self.minimumPitchCount = 1000;
         self.playerSearch = '';
         self.activeTab = 'basic';
@@ -22,13 +22,33 @@ materialAdmin
         self.runningReport = true;
         
         /**/
-        reportService.getCatcherFramingReport(self.additionalFilters).success(function(d){
+        reportService.getVelocityDiffReport(self.additionalFilters).success(function(d){
             self.results = d;
+            
             for(r in self.results){
-                self.results[r].score = parseFloat(self.results[r].score);
+                self.results[r].cuvelo = parseFloat(self.results[r].cuvelo) || 0;
+                self.results[r].fbvelo = parseFloat(self.results[r].fbvelo) || 0;
+                self.results[r].diff = parseFloat(self.results[r].diff) || 0;
             }
             self.runningReport = false;
         });
+        
+        self.rerunReport = function(){
+            self.results = [];
+            self.runningReport = true;
+            reportService.getVelocityDiffReport(self.additionalFilters).success(function(d){
+                self.results = d;
+                for(r in self.results){
+                    self.results[r].cuvelo = parseFloat(self.results[r].cuvelo) || 0;
+                    self.results[r].fbvelo = parseFloat(self.results[r].fbvelo) || 0;
+                    self.results[r].diff = parseFloat(self.results[r].diff) || 0;
+                }
+                self.initialAdditionalFilters = jQuery.extend(true, {}, self.additionalFilters);
+                self.runningReport = false;
+            });
+        }
+        
+        
         
         self.changeSort = function(s){
             var desc = s.substr(0,1) == '-';
@@ -82,17 +102,4 @@ materialAdmin
             }
             return input;
         };
-        
-        self.rerunReport = function(){
-            self.results = [];
-            self.runningReport = true;
-            reportService.getCatcherFramingReport(self.additionalFilters).success(function(d){
-                self.results = d;
-                for(r in self.results){
-                    self.results[r].score = parseFloat(self.results[r].score);
-                }
-                self.initialAdditionalFilters = jQuery.extend(true, {}, self.additionalFilters);
-                self.runningReport = false;
-            });
-        }
     });

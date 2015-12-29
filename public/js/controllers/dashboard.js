@@ -6,7 +6,11 @@ materialAdmin
         {
             slug: 'catcher-framing',
             name: 'Catcher Framing'
-        }
+        },
+        {
+            slug: 'velocity-diff',
+            name: 'Pitcher Velocity Difference'
+        },
         ];
         
         playerService.getArbitraryPlayers(5).success(function(d){

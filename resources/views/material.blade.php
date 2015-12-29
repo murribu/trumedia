@@ -123,6 +123,7 @@
         <script src="js/controllers/player.js"></script>
         <script src="js/controllers/players.js"></script>
         <script src="js/controllers/reportsCatcherFraming.js"></script>
+        <script src="js/controllers/reportsVelocityDiff.js"></script>
 
         <!-- Services -->
         <script src="js/services/player.js"></script>

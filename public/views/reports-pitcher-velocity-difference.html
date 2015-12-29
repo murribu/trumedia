@@ -1,0 +1,128 @@
+<div class="container" data-ng-controller="reportsVelocityDiffCtrl as rctrl">
+    <div class="card">
+        <div class="card-header">
+            <h2>Customize Your Report</h2>
+        </div>
+        <div class="card-body card-padding">
+            <ul class="tab-nav tn-justified" style="margin-bottom: 24px;">
+                <li ng-class="{'active': rctrl.activeTab == 'basic'}" class="btn-wave">
+                    <a ng-click="rctrl.activeTab = 'basic'" href="#/reports/velocity-diff">Basic Filters</a>
+                </li>
+                <li ng-class="{'active': rctrl.activeTab == 'additional'}" class="btn-wave">
+                    <a ng-click="rctrl.activeTab = 'additional'" href="#/reports/velocity-diff">Additional Filters</a>
+                </li>
+            </ul>
+            <div ng-show="rctrl.activeTab == 'basic'">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Minimum Pitch Count</label>
+                            <div class="fg-line">
+                                <input type="number" class="form-control" ng-model="rctrl.minimumPitchCount">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Player Search</label>
+                            <div class="fg-line">
+                                <input type="text" class="form-control" ng-model="rctrl.playerSearch" placeholder="Posey">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="rctrl.activeTab == 'additional'">
+                <div class="row" style="margin:5px;">
+                    <p class="f-500 c-black m-b-5">Innings</p>
+                    <small class="c-gray">{{ rctrl.additionalFilters.inningMin }} - {{ rctrl.additionalFilters.inningMax }}</small>
+                    <br/>
+                    <br/>
+                    <div style="padding:0px 12px 12px 12px;">
+                        <div slider class="input-slider-range" ng-from="rctrl.additionalFilters.inningMin" ng-to="rctrl.additionalFilters.inningMax" start=1 end=20></div>
+                    </div>
+                </div>
+                <div class="row" style="margin:5px;">
+                    <div class="col-sm-4 checkbox">
+                        <p class="f-500 c-black m-b-5">Man on...</p>
+                        <div class="form-group" title="If checked, the report will include pitches where there was a man on first. If unchecked, it won't care whether there was a man on first.">
+                            <label>First
+                                <input type="checkbox" ng-model="rctrl.additionalFilters.manOnFirst" >
+                                <i class="input-helper"></i>
+                            </label>
+                        </div>
+                        <div class="form-group" title="If checked, the report will include pitches where there was a man on second. If unchecked, it won't care whether there was a man on second.">
+                            <label>Second
+                                <input type="checkbox" ng-model="rctrl.additionalFilters.manOnSecond">
+                                <i class="input-helper"></i>
+                            </label>
+                        </div>
+                        <div class="form-group" title="If checked, the report will include pitches where there was a man on third. If unchecked, it won't care whether there was a man on third.">
+                            <label>Third
+                                <input type="checkbox" ng-model="rctrl.additionalFilters.manOnThird">
+                                <i class="input-helper"></i>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2" style="margin-top:10px;">
+                        <p class="f-500 c-black m-b-5">Outs</p>
+                        <div class="form-group">
+                            <select multiple="true" ng-model="rctrl.additionalFilters.outs" ng-options="n for n in rctrl.range(0,2)" style="width:80px;"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2" style="margin-top:10px;">
+                        <p class="f-500 c-black m-b-5">Balls</p>
+                        <div class="form-group">
+                            <select multiple="true" ng-model="rctrl.additionalFilters.balls" ng-options="n for n in rctrl.range(0,3)" style="width:80px;"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2" style="margin-top:10px;">
+                        <p class="f-500 c-black m-b-5">Strikes</p>
+                        <div class="form-group">
+                            <select multiple="true" ng-model="rctrl.additionalFilters.strikes" ng-options="n for n in rctrl.range(0,2)" style="width:80px;"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn btn-primary" style="float:right;" ng-click="rctrl.rerunReport()">Re-run Report</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h2>Results</h2> <div><small>Average Fastball Velocity - Average Changeup Velocity</div></small><div><small ng-show="!rctrl.arraysEqual(rctrl.additionalFilters, rctrl.initialAdditionalFilters);" style="background-color: lightyellow;">These data do not match your filters. Please re-run the report to see your new data.</small></div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-vmiddle table-condensed ng-table" show-filter="true">
+                    <thead>
+                        <tr>
+                            <th class="header sortable" ng-click="rctrl.changeSort('name')" ng-class="{'sort-asc': rctrl.currentSort == 'name', 'sort-desc': rctrl.currentSort == '-name'}"><div class="ng-table-header">Name</div></th>
+                            <th class="header sortable" ng-click="rctrl.changeSort('fbvelo')" ng-class="{'sort-asc': rctrl.currentSort == 'fbvelo', 'sort-desc': rctrl.currentSort == '-fbvelo'}"><div class="ng-table-header">FB Velocity</div></th>
+                            <th class="header sortable" ng-click="rctrl.changeSort('cuvelo')" ng-class="{'sort-asc': rctrl.currentSort == 'cuvelo', 'sort-desc': rctrl.currentSort == '-cuvelo'}"><div class="ng-table-header">CU Velocity</div></th>
+                            <th class="header sortable" ng-click="rctrl.changeSort('diff')" ng-class="{'sort-asc': rctrl.currentSort == 'diff', 'sort-desc': rctrl.currentSort == '-diff'}"><div class="ng-table-header">Diff</div></th>
+                            <th class="header sortable" ng-click="rctrl.changeSort('pitch_count')" ng-class="{'sort-asc': rctrl.currentSort == 'pitch_count', 'sort-desc': rctrl.currentSort == '-pitch_count'}"><div class="ng-table-header">Pitch Count</div></th>
+                        </tr>
+                    </thead>
+                    
+                    <tr ng-repeat="result in rctrl.results | orderBy:rctrl.currentSort | filter:rctrl.filterResults | startFrom:(rctrl.currentPage-1)*rctrl.pageSize | limitTo:rctrl.pageSize">
+                        <td><a href="#/players/{{result.id}}">{{result.name}}</a></td>
+                        <td>{{result.fbvelo}}</td>
+                        <td>{{result.cuvelo}}</td>
+                        <td>{{result.diff}}</td>
+                        <td>{{result.pitch_count}}</td>
+                    </tr>
+                    <tr ng-hide="(rctrl.results | filter:rctrl.filterResults).length > 0 && !rctrl.runningReport"><td colspan="5">No results. Check your <a ng-click="rctrl.activeTab = 'basic'" href="/#/reports/velocity-diff">basic filters</a>. You may be filtering everyone out.</td></tr>
+                </table>
+                <div class="ng-table-pager">
+                    <ul class="pagination ng-table-pagination">
+                        <li ng-class="{'active' : $index === (rctrl.currentPage-1)*rctrl.pageSize}" ng-repeat="result in rctrl.results | filter:rctrl.filterResults" ng-if="$index % rctrl.pageSize === 0">
+                            <a ng-click="rctrl.changePage(($index / rctrl.pageSize) + 1)" href="">{{($index / rctrl.pageSize) + 1 | number:0}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

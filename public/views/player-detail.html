@@ -9,8 +9,8 @@
             <div class="pmo-block pmo-contact hidden-xs">
                 <h2>These reports are available for {{pctrl.player.name}}</h2>
                 <ul>
-                    <li ng-show="(',' + pctrl.player.positions + ',').indexOf(',C,') > -1"><i class="zmdi zmdi-info-outline"></i><a href="/#/reports/catcherframing/{{ pctrl.player.id }}">Catcher Framing</a></li>
-                    <li ng-show="(',' + pctrl.player.positions + ',').indexOf(',P,') > -1"><i class="zmdi zmdi-info-outline"></i><a href="/#/reports/velocitydiff/{{ pctrl.player.id }}">Velocity Difference</a></li>
+                    <li ng-show="(',' + pctrl.player.positions + ',').indexOf(',C,') > -1"><i class="zmdi zmdi-info-outline"></i><a href="/#/reports/catcher-framing">Catcher Framing</a></li>
+                    <li ng-show="(',' + pctrl.player.positions + ',').indexOf(',P,') > -1"><i class="zmdi zmdi-info-outline"></i><a href="/#/reports/velocity-diff">Velocity Difference</a></li>
                     <li ng-show="pctrl.player.battedballdistancebymonth && pctrl.player.battedballdistancebymonth.length > 0"><i class="zmdi zmdi-info-outline"></i><a href="/#/reports/battedballdistance/{{ pctrl.player.id }}">Batted Ball Distance</a></li>
                 </ul>
             </div>

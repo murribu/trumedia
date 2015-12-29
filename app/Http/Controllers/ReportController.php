@@ -87,10 +87,83 @@ class ReportController extends Controller {
             
         $group = "
             group by p.catcher_id ";
-        $order = "
-            order by score desc ";
         
-        $query = $select.$from.$where.$group.$order;
+        $query = $select.$from.$where.$group;
+        
+        $result = DB::select(DB::raw($query));
+        
+        return $result;
+    }
+    
+    function postVelocityDiffReport(){
+        $select = "select pl.name, pl.id
+            ,sum(case when pitch_type_id in (3,4,5) then release_velocity else 0 end)/sum(case when pitch_type_id in (3,4,5) then 1 else 0 end) fbvelo
+            , sum(case when pitch_type_id in (1) then release_velocity else 0 end)/sum(case when pitch_type_id in (1) then 1 else 0 end) cuvelo
+            ,sum(case when pitch_type_id in (3,4,5) then release_velocity else 0 end)/sum(case when pitch_type_id in (3,4,5) then 1 else 0 end) - sum(case when pitch_type_id in (1) then release_velocity else 0 end)/sum(case when pitch_type_id in (1) then 1 else 0 end) diff
+            , count(p.id) pitch_count";
+        $from = "
+            from pitches p 
+            left join players pl on pl.id = p.pitcher_id ";
+        $where = "
+            where p.pitch_type_id in (1,3,4,5) ";
+        $group = "
+            group by p.pitcher_id";
+            
+        if (Input::has('inningMax')){
+            $where .= "
+                and p.inning <= ".intval(Input::get('inningMax'));
+        }
+        
+        if (Input::has('inningMin')){
+            $where .= "
+                and p.inning >= ".intval(Input::get('inningMin'));
+        }
+        
+        if (Input::has('manOnFirst') && Input::get('manOnFirst') == 'true'){
+            $where .= "
+                and p.man_on_first = 'true' ";
+        }
+        
+        if (Input::has('manOnSecond') && Input::get('manOnSecond') == 'true'){
+            $where .= "
+                and p.man_on_second= 'true' ";
+        }
+        
+        if (Input::has('manOnThird') && Input::get('manOnThird') == 'true'){
+            $where .= "
+                and p.man_on_third= 'true' ";
+        }
+        
+        if (Input::has('outs')){
+            $where .= "
+                and p.outs in (99,";
+            foreach(Input::get('outs') as $out){
+                $where .= $out.",";
+            }
+            $where = substr($where,0,-1);
+            $where .= ") ";
+        }
+        
+        if (Input::has('balls')){
+            $where .= "
+                and p.balls in (99,";
+            foreach(Input::get('balls') as $ball){
+                $where .= $ball.",";
+            }
+            $where = substr($where,0,-1);
+            $where .= ") ";
+        }
+        
+        if (Input::has('strikes')){
+            $where .= "
+                and p.strikes in (99,";
+            foreach(Input::get('strikes') as $strike){
+                $where .= $strike.",";
+            }
+            $where = substr($where,0,-1);
+            $where .= ") ";
+        }
+        $query = $select.$from.$where.$group;
         
         $result = DB::select(DB::raw($query));
         

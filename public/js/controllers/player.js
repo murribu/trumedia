@@ -2,8 +2,6 @@ materialAdmin
     .controller('playerCtrl', function($scope, $timeout, $location, playerService) {
         var self = this;
         self.player = [];
-        self.activeTab = 'stats';
-        self.currentCareerSort = 'season';
         self.activeTab = '';
         
         self.flotOptions = {
@@ -52,7 +50,9 @@ materialAdmin
             
             playerService.getPlayerCatcherFraming($location.path().substr(9,999)).success(function(data){
                 self.player.catcherframingscorebymonth = data;
-                self.activeTab = 'catcherframing';
+                if (self.player.catcherframingscorebymonth.length > 0) {
+                    self.activeTab = 'catcherframing';
+                }
                 
                 var framing = self.player.catcherframingscorebymonth;
                 var framedata = [];

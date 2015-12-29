@@ -25,6 +25,7 @@ Route::get('/player/{id}/battedballdistance', 'PlayerController@getPlayerBattedB
 
 /* Reports */
 Route::post('/report/catcherframing', 'ReportController@postCatcherFramingReport');
+Route::post('/report/velocitydiff', 'ReportController@postVelocityDiffReport');
 
 /*
 |--------------------------------------------------------------------------

@@ -41,12 +41,7 @@ materialAdmin
         
             .state ('reports', {
                 url: '/reports',
-                templateUrl: 'views/common.html'
-            })
-            
-            .state ('reports.catcher-framing', {
-                url: '/catcher-framing',
-                templateUrl: 'views/reports-catcher-framing.html',
+                templateUrl: 'views/common.html',
                 resolve: {
                     loadPlugin: function($ocLazyLoad) {
                         return $ocLazyLoad.load ([
@@ -69,6 +64,16 @@ materialAdmin
                         ])
                     }
                 }
+            })
+            
+            .state ('reports.catcher-framing', {
+                url: '/catcher-framing',
+                templateUrl: 'views/reports-catcher-framing.html'
+            })
+            
+            .state ('reports.velocity-diff', {
+                url: '/velocity-diff',
+                templateUrl: 'views/reports-pitcher-velocity-difference.html'
             })
 
             //------------------------------
