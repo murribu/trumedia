@@ -43,6 +43,9 @@
 .heat-zone-strike{
     background-color:red;
 }
+.heat-zone-in-play{
+    background-color:blue;
+}
 .heat-zone-section{
     position:absolute;
     width:78px;
