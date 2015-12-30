@@ -1,0 +1,71 @@
+.heat-zone-card{
+    width:800px;
+    height:500px;
+}
+.heat-zone-container{
+    width:800px;
+    height:500px;
+    left:250px;
+    position:relative;
+}
+.heat-zone-hot{
+    background-color:red;
+}
+.heat-zone-cold{
+    background-color:blue;
+}
+.heat-zone-pitch{
+    position:absolute;
+    width:8px;
+    height:8px;
+    background-color:blue;
+    border-radius: 5px;
+}
+.heat-zone-section{
+    position:absolute;
+    width:78px;
+    height:78px;
+    border: 1px dashed gray;
+}
+.heat-row-0{
+    top:80px;
+}
+.heat-row-1{
+    top:160px;
+}
+.heat-row-2{
+    top:240px;
+}
+.heat-row-3{
+    top:320px;
+}
+.heat-row-4{
+    top:400px;
+}
+.heat-col-0{
+    left:80px;
+}
+.heat-col-1{
+    left:160px;
+}
+.heat-col-2{
+    left:240px;
+}
+.heat-col-3{
+    left:320px;
+}
+.heat-col-4{
+    left:400px;
+}
+.heat-row-1.heat-col-1, .heat-row-1.heat-col-2, .heat-row-1.heat-col-3{
+    border-top:2px solid black;
+}
+.heat-row-1.heat-col-1, .heat-row-2.heat-col-1, .heat-row-3.heat-col-1{
+    border-left:2px solid black;
+}
+.heat-row-3.heat-col-1, .heat-row-3.heat-col-2, .heat-row-3.heat-col-3{
+    border-bottom:2px solid black;
+}
+.heat-row-1.heat-col-3, .heat-row-2.heat-col-3, .heat-row-3.heat-col-3{
+    border-right:2px solid black;
+}

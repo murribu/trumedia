@@ -59,7 +59,6 @@ materialAdmin
                                     'vendors/bower_components/nouislider/jquery.nouislider.min.js',
                                     'vendors/bower_components/chosen/chosen.jquery.js',
                                     'vendors/bower_components/angular-chosen-localytics/chosen.js',
-                                    'js/jquery.canvasjs.min.js',
                                 ]
                             }
                         ])
@@ -79,7 +78,20 @@ materialAdmin
             
             .state ('reports.heat-zone', {
                 url: '/heat-zone',
-                templateUrl: 'views/reports-batter-heat-zone.html'
+                templateUrl: 'views/reports-batter-heat-zone.html',
+                resolve: {
+                    loadPlugin: function($ocLazyLoad) {
+                        return $ocLazyLoad.load ([
+                            {
+                                name: 'css',
+                                insertBefore: '#app-level',
+                                files: [
+                                    'css/heatzone.css',
+                                ]
+                            },
+                        ])
+                    }
+                }
             })
 
             //------------------------------

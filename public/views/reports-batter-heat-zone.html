@@ -93,10 +93,14 @@
         <div class="card-header">
             <h2>Batter Heat Zone</h2>
         </div>
-        <div class="card-body" style="position:relative;">
-            <div id="chartContainer" style="height: 500px; width: 800px;"></div>
-            <div id="chartOverlay" style="height: 500px; width: 800px;position:absolute;top:0;left:0;">
-                <div id="overlay-1-1" style="background-color:red;color:black;position:relative;top:105px; left:283px;width:47px;height: 63px;text-align: center;">0-5</div>
+        <div class="card-body heat-zone-card">
+            <div class="heat-zone-container">
+                <div ng-repeat="n in rctrl.range(0,24)" class="heat-zone-section heat-row-{{Math.floor(n/5)}} heat-col-{{n % 5}}"></div>
+                <div ng-repeat="point in rctrl.dataPoints | filter:filterResults" class="heat-zone-pitch" 
+                style="
+                top:{{396-(240*((point.y-point.szb)/(point.szt-point.szb)))}}px;
+                left:{{276+(point.x*240*12/17)}}px" 
+                title="{{point.label}}, x={{point.x}}, y={{point.y}}, szt={{point.szt}}, szb={{point.szb}}, distFromBottomOfZone={{(point.y-point.szb)}}, zoneHeightDiv3={{(point.szt-point.szb)/3}}"></div>
             </div>
         </div>
     </div>
