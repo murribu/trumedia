@@ -30,7 +30,7 @@ class ReportController extends Controller {
             ->leftJoin('plate_appearance_results', 'plate_appearance_results.id', '=', 'pitches.pa_result_id')
             ->leftJoin('players as pitcher', 'pitcher.id', '=', 'pitches.pitcher_id')
             ->leftJoin('players as batter', 'batter.id', '=', 'pitches.batter_id')
-            ->selectRaw('px x, pz y, szt, szb, pa_result_id, pitch_results.ball, pitch_results.strike, pitch_results.description pitch_desc, plate_appearance_results.description pa_desc, batter.name batter_name, pitcher.name pitcher_name, concat(game_string, \'-\', batter_id, \'-\',  pitcher_id, \'-\', times_faced) abslug')
+            ->selectRaw('pitches.id, game_date, px x, pz y, szt, szb, pa_result_id, pitch_results.ball, pitch_results.strike, pitch_results.description pitch_desc, plate_appearance_results.atbat, plate_appearance_results.hit, plate_appearance_results.onbase, plate_appearance_results.bases, plate_appearance_results.description pa_desc, batter.name batter_name, pitcher.name pitcher_name, concat(game_string, \'-\', batter_id, \'-\',  pitcher_id, \'-\', times_faced) abslug')
             ->take(400)
             ->get();
         

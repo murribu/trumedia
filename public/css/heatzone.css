@@ -9,7 +9,15 @@
     position:relative;
 }
 .heat-zone-hot{
-    background-color:red;
+  background: 
+    repeating-linear-gradient(
+        45deg,
+        red,
+        red 1px,
+        darkgray 2px,
+        darkgray 5px
+    );
+    color:white;
 }
 .heat-zone-cold{
     background-color:blue;
@@ -21,6 +29,13 @@
     background-color:blue;
     border-radius: 5px;
     z-index:5;
+    opacity:0.6;
+}
+.heat-zone-section .heat-zone-avg{
+    font-weight: bold;
+    font-size: large;
+    text-align:center;
+    width:100%;
 }
 .heat-zone-ball{
     background-color:green;

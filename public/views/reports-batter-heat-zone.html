@@ -14,20 +14,31 @@
             </ul>
             <div ng-show="rctrl.activeTab == 'basic'">
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 checkbox">
+                        <p class="f-500 c-black m-b-5">Show...</p>
                         <div class="form-group">
-                            <label>Minimum Pitch Count</label>
-                            <div class="fg-line">
-                                <input type="number" class="form-control" ng-model="rctrl.minimumPitchCount">
-                            </div>
+                            <label>Balls
+                                <input type="checkbox" ng-model="rctrl.basicFilters.showBalls" >
+                                <i class="input-helper"></i>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Strikes
+                                <input type="checkbox" ng-model="rctrl.basicFilters.showStrikes">
+                                <i class="input-helper"></i>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Balls In Play
+                                <input type="checkbox" ng-model="rctrl.basicFilters.showInPlay">
+                                <i class="input-helper"></i>
+                            </label>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-2" style="margin-top:10px;">
+                        <p class="f-500 c-black m-b-5">Season</p>
                         <div class="form-group">
-                            <label>Player Search</label>
-                            <div class="fg-line">
-                                <input type="text" class="form-control" ng-model="rctrl.playerSearch" placeholder="Posey">
-                            </div>
+                            <select multiple="true" ng-model="rctrl.basicFilters.selectedSeasons" ng-options="n for n in rctrl.range(2013,2015)" style="width:80px;"></select>
                         </div>
                     </div>
                 </div>
@@ -53,12 +64,33 @@
             <div class="selected-pitcher"></div>
             <div class="selected-batter"></div>
             <div class="heat-zone-container">
-                <div ng-repeat="n in rctrl.range(0,24)" class="heat-zone-section heat-row-{{Math.floor(n/5)}} heat-col-{{n % 5}}"></div>
-                <div ng-repeat="point in rctrl.dataPoints | filter:filterResults" class="heat-zone-pitch" ng-class="{'heat-zone-in-play' : point.pa_result_id != '', 'heat-zone-ball' : point.ball == 1, 'heat-zone-strike' : point.strike == 1}"
-                style="
-                top:{{396-(240*((point.y-point.szb)/(point.szt-point.szb)))}}px;
-                left:{{276+(point.x*240*12/17)}}px" 
-                title="{{point.pitch_desc}} - {{point.pa_desc}}" ng-mouseover="selectedPoint = point"></div>
+                <div 
+                    ng-repeat="n in rctrl.range(0,24)" 
+                    class="heat-zone-section heat-row-{{Math.floor(n/5)}} heat-col-{{n % 5}}" 
+                    ng-class="{'heat-zone-hot' : rctrl.displayStat == 'avg' && (rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].hits / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats) > rctrl.hotLevels.avg}"
+                    ng-data-hits="{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].hits}}"
+                    ng-data-atbats="{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats}}"
+                    ng-data-bases="{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].bases}}"
+                    ng-data-onbases="{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].onbases}}"
+                    ng-data-plateappearances="{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].plateappearances}}">
+                    <div class="heat-zone-avg"
+                        ng-show="rctrl.displayStat == 'avg' && rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats > 0">
+                        {{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].hits}} - {{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats}}</div>
+                </div>
+                <div 
+                    ng-repeat="point in rctrl.dataPoints | filter:rctrl.filterResults" 
+                    class="heat-zone-pitch" 
+                    ng-class="{'heat-zone-in-play' : point.pa_result_id != '', 'heat-zone-ball' : point.ball == 1, 'heat-zone-strike' : point.strike == 1}"
+                    style="
+                    top:{{396-(240*((point.y-point.szb)/(point.szt-point.szb)))}}px;
+                    left:{{276+(point.x*240*12/17)}}px" 
+                    title="{{point.pitch_desc}} - {{point.pa_desc}}&#13;{{point.game_date}}" 
+                    ng-mouseover="selectedPoint = point"
+                    data-x="{{point.x}}"
+                    data-y="{{point.y}}"
+                    data-szt="{{point.szt}}"
+                    data-szb="{{point.szb}}"
+                    data-id="{{point.id}}"></div>
             </div>
         </div>
     </div>

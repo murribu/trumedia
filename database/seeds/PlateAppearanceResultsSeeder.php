@@ -17,87 +17,171 @@ class PlateAppearanceResultsSeeder extends Seeder{
         $results = array(
             array(
                 'slug' => 'S',
-                'description' => 'Single'
+                'description' => 'Single',
+                'atbat' => 1,
+                'hit' => 1,
+                'onbase' => 1,
+                'bases' => 1,
             ),
             array(
                 'slug' => 'D',
-                'description' => 'Double'
+                'description' => 'Double',
+                'atbat' => 1,
+                'hit' => 1,
+                'onbase' => 1,
+                'bases' => 2,
             ),
             array(
                 'slug' => 'T',
-                'description' => 'Triple'
+                'description' => 'Triple',
+                'atbat' => 1,
+                'hit' => 1,
+                'onbase' => 1,
+                'bases' => 3,
             ),
             array(
                 'slug' => 'HR',
-                'description' => 'Homerun'
+                'description' => 'Homerun',
+                'atbat' => 1,
+                'hit' => 1,
+                'onbase' => 1,
+                'bases' => 4,
             ),
             array(
                 'slug' => 'BB',
-                'description' => 'Walk'
+                'description' => 'Walk',
+                'atbat' => 0,
+                'hit' => 0,
+                'onbase' => 1,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'IBB',
-                'description' => 'Intentional Walk'
+                'description' => 'Intentional Walk',
+                'atbat' => 0,
+                'hit' => 0,
+                'onbase' => 1,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'HBP',
-                'description' => 'Hit by Pitch'
+                'description' => 'Hit by Pitch',
+                'atbat' => 0,
+                'hit' => 0,
+                'onbase' => 1,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'IP_OUT',
-                'description' => 'In Play Out'
+                'description' => 'In Play Out',
+                'atbat' => 1,
+                'hit' => 0,
+                'onbase' => 0,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'K',
-                'description' => 'Strikeout'
+                'description' => 'Strikeout',
+                'atbat' => 1,
+                'hit' => 0,
+                'onbase' => 0,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'FC',
-                'description' => 'Fielder\'s Choice'
+                'description' => 'Fielder\'s Choice',
+                'atbat' => 1,
+                'hit' => 0,
+                'onbase' => 1,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'DP',
-                'description' => 'Double Play'
+                'description' => 'Double Play',
+                'atbat' => 1,
+                'hit' => 0,
+                'onbase' => 0,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'TP',
-                'description' => 'Triple Play'
+                'description' => 'Triple Play',
+                'atbat' => 1,
+                'hit' => 0,
+                'onbase' => 0,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'SH',
-                'description' => 'Sacrifice Bunt'
+                'description' => 'Sacrifice Bunt',
+                'atbat' => 0,
+                'hit' => 0,
+                'onbase' => 0,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'SF',
-                'description' => 'Sacrifice Fly'
+                'description' => 'Sacrifice Fly',
+                'atbat' => 0,
+                'hit' => 0,
+                'onbase' => 0,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'ROE',
-                'description' => 'Reached on Error'
+                'description' => 'Reached on Error',
+                'atbat' => 1,
+                'hit' => 0,
+                'onbase' => 1,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'SH_ROE',
-                'description' => 'Sacrifice Bunt ROE'
+                'description' => 'Sacrifice Bunt ROE',
+                'atbat' => 0,
+                'hit' => 0,
+                'onbase' => 1,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'SF_ROE',
-                'description' => 'Sacrifice Fly ROE'
+                'description' => 'Sacrifice Fly ROE',
+                'atbat' => 0,
+                'hit' => 0,
+                'onbase' => 1,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'BI',
-                'description' => 'Batter Interference'
+                'description' => 'Batter Interference',
+                'atbat' => 1,
+                'hit' => 0,
+                'onbase' => 0,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'CI',
-                'description' => 'Catcher Interference'
+                'description' => 'Catcher Interference',
+                'atbat' => 0,
+                'hit' => 0,
+                'onbase' => 0,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'FI',
-                'description' => 'Fielder Interference'
+                'description' => 'Fielder Interference',
+                'atbat' => 0,
+                'hit' => 0,
+                'onbase' => 0,
+                'bases' => 0,
             ),
             array(
                 'slug' => 'NO_PLAY',
-                'description' => 'No Play (ex: Runner Out)'
+                'description' => 'No Play (ex: Runner Out)',
+                'atbat' => 0,
+                'hit' => 0,
+                'onbase' => 0,
+                'bases' => 0,
             ),
         );
         
@@ -109,6 +193,10 @@ class PlateAppearanceResultsSeeder extends Seeder{
                 $result->description = $r['description'];
                 $result->timestamp_utc = time();
             }
+            $result->atbat = $r['atbat'];
+            $result->hit = $r['hit'];
+            $result->onbase = $r['onbase'];
+            $result->bases = $r['bases'];
             $result->save();
         }
     }
