@@ -20,6 +20,18 @@ materialAdmin
                 url: "/report/velocitydiff",
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: $.param(sent)
-              });
+            });
         };
+        
+        this.getPitches = function(filters){
+            var sent = filters;
+            
+            return $http({
+                method: 'post',
+                url: "/report/pitches",
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                data: $.param(sent)
+            });
+            
+        }
     }])

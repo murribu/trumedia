@@ -13,7 +13,7 @@
         <link href="vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
         <link href="vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
         <link href="vendors/bower_components/angular-loading-bar/src/loading-bar.css" rel="stylesheet">
-
+        <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
         <!-- CSS -->
         <!--This app-level div is used in lazyLoading (public/js/config.js) -->
         <div id="app-level"></div>
@@ -91,6 +91,7 @@
         <script src="vendors/bower_components/Waves/dist/waves.min.js"></script>
         <script src="vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
         <script src="vendors/bower_components/ng-table/dist/ng-table.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
        
 
         <!-- Placeholder for IE9 -->

@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 /* Players */
 Route::get('/players', 'PlayerController@getPlayers');
+Route::get('/players/pitchers', 'PlayerController@getPitchers');
+Route::get('/players/batters', 'PlayerController@getBatters');
 Route::get('/players/arbitrary/{count}', 'PlayerController@getArbitraryPlayers');
 Route::get('/player/{id}', 'PlayerController@getPlayer');
 Route::get('/player/{id}/catcherframing', 'PlayerController@getPlayerCatcherFramingByMonth');
@@ -26,6 +28,7 @@ Route::get('/player/{id}/battedballdistance', 'PlayerController@getPlayerBattedB
 /* Reports */
 Route::post('/report/catcherframing', 'ReportController@postCatcherFramingReport');
 Route::post('/report/velocitydiff', 'ReportController@postVelocityDiffReport');
+Route::post('/report/pitches', 'ReportController@postPitches');
 
 /*
 |--------------------------------------------------------------------------

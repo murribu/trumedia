@@ -17,67 +17,99 @@ class PitchResultsSeeder extends Seeder{
         $pitch_results = array(
             array(
                 'slug' => 'SS',
-                'description' => 'Swinging Strike'
+                'description' => 'Swinging Strike',
+                'strike' => 1,
+                'ball' => 0,
             ),
             array(
                 'slug' => 'SL',
-                'description' => 'Strike Looking'
+                'description' => 'Strike Looking',
+                'strike' => 1,
+                'ball' => 0,
             ),
             array(
                 'slug' => 'F',
-                'description' => 'Foul'
+                'description' => 'Foul',
+                'strike' => 1,
+                'ball' => 0,
             ),
             array(
                 'slug' => 'FT',
-                'description' => 'Foul Tip'
+                'description' => 'Foul Tip',
+                'strike' => 1,
+                'ball' => 0,
             ),
             array(
                 'slug' => 'FB',
-                'description' => 'Foul Bunt'
+                'description' => 'Foul Bunt',
+                'strike' => 1,
+                'ball' => 0,
             ),
             array(
                 'slug' => 'MB',
-                'description' => 'Missed Bunt'
+                'description' => 'Missed Bunt',
+                'strike' => 1,
+                'ball' => 0,
             ),
             array(
                 'slug' => 'B',
-                'description' => 'Ball'
+                'description' => 'Ball',
+                'strike' => 0,
+                'ball' => 1,
             ),
             array(
                 'slug' => 'BID',
-                'description' => 'Ball in Dirt'
+                'description' => 'Ball in Dirt',
+                'strike' => 0,
+                'ball' => 1,
             ),
             array(
                 'slug' => 'HBP',
-                'description' => 'Hit By Pitch'
+                'description' => 'Hit By Pitch',
+                'strike' => 0,
+                'ball' => 1,
             ),
             array(
                 'slug' => 'IB',
-                'description' => 'Interntional Ball'
+                'description' => 'Interntional Ball',
+                'strike' => 0,
+                'ball' => 1,
             ),
             array(
                 'slug' => 'PO',
-                'description' => 'Pitch Out'
+                'description' => 'Pitch Out',
+                'strike' => 0,
+                'ball' => 1,
             ),
             array(
                 'slug' => 'IP',
-                'description' => 'Ball in Play'
+                'description' => 'Ball in Play',
+                'strike' => 0,
+                'ball' => 0,
             ),
             array(
                 'slug' => 'AS',
-                'description' => 'Automatic Strike'
+                'description' => 'Automatic Strike',
+                'strike' => 1,
+                'ball' => 0,
             ),
             array(
                 'slug' => 'AB',
-                'description' => 'Automatic Ball'
+                'description' => 'Automatic Ball',
+                'strike' => 0,
+                'ball' => 1,
             ),
             array(
                 'slug' => 'CI',
-                'description' => 'Catcher Interference'
+                'description' => 'Catcher Interference',
+                'strike' => 0,
+                'ball' => 0,
             ),
             array(
                 'slug' => 'UK',
-                'description' => 'Unknown'
+                'description' => 'Unknown',
+                'strike' => 0,
+                'ball' => 0,
             ),
         );
         
@@ -89,6 +121,8 @@ class PitchResultsSeeder extends Seeder{
                 $pitch_result->description = $p['description'];
                 $pitch_result->timestamp_utc = time();
             }
+            $pitch_result->ball = $p['ball'];
+            $pitch_result->strike = $p['strike'];
             $pitch_result->save();
         }
     }

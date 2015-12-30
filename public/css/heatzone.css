@@ -20,6 +20,13 @@
     height:8px;
     background-color:blue;
     border-radius: 5px;
+    z-index:5;
+}
+.heat-zone-ball{
+    background-color:green;
+}
+.heat-zone-strike{
+    background-color:red;
 }
 .heat-zone-section{
     position:absolute;

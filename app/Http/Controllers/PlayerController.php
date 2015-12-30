@@ -1,10 +1,10 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 use Auth;
 use DB;
-use Input;
 use Response;
 use Redirect;
 use Session;
@@ -24,6 +24,35 @@ class PlayerController extends Controller {
         
         
         return $player;
+    }
+    
+    function getBatters(){
+        
+        $players = Player::whereRaw('id in (select player_id from player_positions where position_id <> 1)')
+                    ->whereRaw('name like ?', array('%'.Input::get('q').'%'))
+                    ->limit(50)
+                    ->get();
+                    
+        return array(
+            'items' => $players,
+            'total_count' => count($players)
+        );
+    }
+    
+    function getPitchers(){
+        
+        $players = Player::where(function($query){
+                        $query->whereRaw('id in (select player_id from player_positions where position_id = 1)');
+                        $query->orWhereRaw('id not in (select player_id from player_positions)');
+                    })
+                    ->whereRaw('name like ?', array('%'.Input::get('q').'%'))
+                    ->limit(50)
+                    ->get();
+                    
+        return array(
+            'items' => $players,
+            'total_count' => count($players)
+        );
     }
     
     function getPlayerVelocityDifferenceByMonth($id){

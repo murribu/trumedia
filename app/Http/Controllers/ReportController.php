@@ -15,6 +15,31 @@ use App\Models\Player;
 class ReportController extends Controller {
     private $default_min_pitch_count = 100;
     
+    function postPitches(){
+        $pitches = Pitch::whereRaw('1=1');
+        if (Input::has('batter_id')){
+            $pitches = $pitches->where('batter_id', Input::get('batter_id'));
+        }
+        
+        if (Input::has('pitcher_id')){
+            $pitches = $pitches->where('pitcher_id', Input::get('pitcher_id'));
+        }
+        
+        $pitches = $pitches
+            ->leftJoin('pitch_results', 'pitch_results.id', '=', 'pitches.pitch_result_id')
+            ->leftJoin('plate_appearance_results', 'plate_appearance_results.id', '=', 'pitches.pa_result_id')
+            ->leftJoin('players as pitcher', 'pitcher.id', '=', 'pitches.pitcher_id')
+            ->leftJoin('players as batter', 'batter.id', '=', 'pitches.batter_id')
+            ->selectRaw('px x, pz y, szt, szb, pa_result_id, pitch_results.ball, pitch_results.strike, pitch_results.description pitch_desc, plate_appearance_results.description pa_desc, batter.name batter_name, pitcher.name pitcher_name, concat(game_string, \'-\', batter_id, \'-\',  pitcher_id, \'-\', times_faced) abslug')
+            ->take(400)
+            ->get();
+        
+        return array(
+            'items' => $pitches,
+            'total_count' => count($pitches)
+        );
+    }
+    
     function postCatcherFramingReport(){
         
         $select = " select pl.name, pl.id,
