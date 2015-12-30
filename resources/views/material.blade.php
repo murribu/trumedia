@@ -122,6 +122,7 @@
         <script src="js/controllers/table.js"></script>
         <script src="js/controllers/player.js"></script>
         <script src="js/controllers/players.js"></script>
+        <script src="js/controllers/reportsBatterHeatZone.js"></script>
         <script src="js/controllers/reportsCatcherFraming.js"></script>
         <script src="js/controllers/reportsVelocityDiff.js"></script>
 
