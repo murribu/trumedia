@@ -39,7 +39,7 @@ materialAdmin
                 label: 'On Base Plus Slugging %',
             },
         ]
-        self.displayStat = self.statsHotLevels[1];
+        self.displayStat = self.statsHotLevels[0];
         self.showReport = false;
         self.pitchTypes = [];
         self.pitchResults = [];
@@ -100,6 +100,7 @@ materialAdmin
 
         self.runReport = function(){
             self.selectedPitch = false;
+            self.runningReport = true;
             self.zones = {};
             for(var r = 0; r < 5; r++){
                 for(var c = 0; c < 5; c++){
@@ -150,14 +151,17 @@ materialAdmin
                     self.populateZones();
                     self.showReport = true;
                 }
+                self.runningReport = false;
             })
             .error(function(d){
                 growlService.growl('There was an error', 'danger');
+                self.runningReport = false;
             });
         };
     
         self.viewAB = function(slug){
-            self.selectedPitch = false;
+            self.runningReport = true;
+            self.dataPoints = [];
             self.zones = {};
             for(var r = 0; r < 5; r++){
                 for(var c = 0; c < 5; c++){
@@ -181,10 +185,12 @@ materialAdmin
                     self.dataPoints = d.items;
                     self.populateZones();
                     self.showReport = true;
+                    self.runningReport = false;
                 }
             })
             .error(function(d){
                 growlService.growl('There was an error', 'danger');
+                self.runningReport = false;
             });
         }
     

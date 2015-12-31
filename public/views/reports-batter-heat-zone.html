@@ -75,8 +75,9 @@
                 <div class="row">
                     <div class="col-md-4" style="padding-top:20px;">
                         <div style="font-size:larger;font-weight:bold;">Heat Zones based on</div>
-                        <select id="heat-zone-stat" style="width:150px" ng-model="rctrl.displayStat" ng-options="stat.label for stat in rctrl.statsHotLevels">
-                        </select>
+                        <select id="heat-zone-stat" style="width:150px;float:left" ng-model="rctrl.displayStat" ng-options="stat.label for stat in rctrl.statsHotLevels">
+                        </select><div style="float:left;">&nbsp;&gt;&nbsp;</div>
+                        <input type="number" step="0.001" ng-model="rctrl.displayStat.hot" style="float: left;width: 53px;" />
                     </div>
                 </div>
             </div>
