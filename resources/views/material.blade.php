@@ -132,6 +132,7 @@
         <script src="js/services/report.js"></script>
 
         <!-- Filters -->
+        <script src="js/filters/ordinal.js"></script>
         <script src="js/filters/startFrom.js"></script>
         
         <!-- Template Modules -->

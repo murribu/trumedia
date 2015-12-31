@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4 checkbox">
+                    <div class="col-sm-3 checkbox">
                         <p class="f-500 c-black m-b-5">Show...</p>
                         <div class="form-group">
                             <label><div class="heat-zone-pitch heat-zone-ball"></div>&nbsp;&nbsp;&nbsp;Balls
@@ -42,6 +42,12 @@
                             <select multiple="true" ng-model="rctrl.filters.selectedSeasons" ng-options="n for n in rctrl.range(2013,2015)" style="width:80px;"></select>
                         </div>
                     </div>
+                    <div class="col-sm-2" style="margin-top:10px;">
+                        <p class="f-500 c-black m-b-5">Pitch Types</p>
+                        <div class="form-group">
+                            <select multiple="true" ng-model="rctrl.filters.selectedPitchTypes" ng-options="p.description for p in rctrl.pitchTypes" style="width:140px;"></select>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="btn btn-default" style="float:left;" ng-click="rctrl.resetParameters()">Reset</div>
@@ -53,6 +59,77 @@
     <div class="card" ng-show="rctrl.showReport">
         <div class="card-header">
             <h2>Batter Heat Zone</h2> <small>Results are limited to 1000 pitches</small>
+        </div>
+        <div ng-show="rctrl.dataPoints.length == 0" id="no-results">No Results</div>
+        <div ng-show="rctrl.dataPoints.length == 1000" id="truncated">The data was truncated at 1000 pitches</div>
+        <div ng-show="rctrl.selectedPitch" id="selected-pitch-container">
+            <div id="selected-pitch">
+                <div class="selected-pitch-game-info">
+                    <table>
+                        <tr>
+                            <td>{{rctrl.selectedPitch.visitor}}</td>
+                            <td>{{rctrl.selectedPitch.vscore}}</td>
+                        </tr>
+                        <tr>
+                            <td>@{{rctrl.selectedPitch.home}}</td>
+                            <td>{{rctrl.selectedPitch.hscore}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center" colspan="2">{{rctrl.selectedPitch.side == "T" ? "Top" : "Bottom"}} {{rctrl.selectedPitch.inning | ordinal}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center" colspan="2">{{rctrl.selectedPitch.game_date | date:'MMM d, yyyy'}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="selected-pitch-game-info">
+                    <table>
+                        <tr>
+                            <td>Balls:</td>
+                            <td>{{rctrl.selectedPitch.balls}}</td>
+                        </tr>
+                        <tr>
+                            <td>Strikes:</td>
+                            <td>{{rctrl.selectedPitch.strikes}}</td>
+                        </tr>
+                        <tr>
+                            <td>Outs:</td>
+                            <td>{{rctrl.selectedPitch.outs}}</td>
+                        </tr>
+                        <tr>
+                            <td>Pitch:</td>
+                            <td>{{rctrl.selectedPitch.pitch_type}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="selected-pitch-game-info">
+                    <table>
+                        <tr>
+                            <td>Pitcher:</td>
+                            <td>{{rctrl.selectedPitch.pitcher_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Batter:</td>
+                            <td>{{rctrl.selectedPitch.batter_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Result:</td>
+                            <td>{{rctrl.selectedPitch.pitch_desc}} - {{rctrl.selectedPitch.pa_desc}}</td>
+                        </tr>
+                        <tr>
+                            <td>AB Slug:</td>
+                            <td>{{rctrl.selectedPitch.abslug}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{rctrl.selectedPitch.atbat_desc}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <canvas id="diamond"></canvas>
+                <div id="selected-pitch-man-on-first" class="selected-pitch-man-on" ng-class="{'active' : rctrl.selectedPitch.man_on_first == '1'}"></div>
+                <div id="selected-pitch-man-on-second" class="selected-pitch-man-on" ng-class="{'active' : rctrl.selectedPitch.man_on_second == '1'}"></div>
+                <div id="selected-pitch-man-on-third" class="selected-pitch-man-on" ng-class="{'active' : rctrl.selectedPitch.man_on_third == '1'}"></div>
+            </div>
         </div>
         <div class="card-body heat-zone-card">
             <div class="selected-pitcher"></div>
@@ -75,11 +152,10 @@
                     ng-repeat="point in rctrl.dataPoints | filter:rctrl.filterResults" 
                     class="heat-zone-pitch" 
                     ng-class="{'heat-zone-in-play' : point.pa_desc != '', 'heat-zone-ball' : point.ball == 1, 'heat-zone-strike' : point.strike == 1}"
+                    ng-click="rctrl.selectPitch(point)"
                     style="
                     top:{{396-(240*((point.y-point.szb)/(point.szt-point.szb)))}}px;
                     left:{{276+(point.x*240*12/17)}}px" 
-                    title="{{point.pitch_desc}} - {{point.pa_desc}}&#13;{{point.game_date}}" 
-                    ng-mouseover="selectedPoint = point"
                     data-x="{{point.x}}"
                     data-y="{{point.y}}"
                     data-szt="{{point.szt}}"

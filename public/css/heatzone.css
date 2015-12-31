@@ -1,6 +1,6 @@
 .heat-zone-card{
     width:100%;
-    height:500px;
+    height:700px;
 }
 .heat-zone-container{
     width:800px;
@@ -30,6 +30,7 @@
     border-radius: 5px;
     z-index:5;
     opacity:0.5;
+    cursor: pointer;
 }
 .heat-zone-section .heat-zone-avg{
     font-weight: bold;
@@ -93,4 +94,67 @@
 }
 .heat-row-1.heat-col-3, .heat-row-2.heat-col-3, .heat-row-3.heat-col-3{
     border-right:2px solid black;
+}
+#no-results{
+    font-size: large;
+    position: absolute;
+    top: 135px;
+    left: calc(50% - 18px);
+}
+#truncated{
+    font-size: large;
+    position: absolute;
+    top: 135px;
+    left: calc(50% - 132px);
+}
+#selected-pitch-container{
+    position:absolute;
+    width:100%;
+    height:100px;
+    top:0px;
+}
+#selected-pitch{
+    width: 650px;
+    height: 114px;
+    left: calc(50% - 250px);
+    position: relative;
+    border:1px solid green;
+}
+.selected-pitch-game-info{
+    position:relative;
+    height:100%;
+    float:left;
+    padding-right: 10px;
+    padding-left: 10px;
+    max-width: 390px;
+}
+.selected-pitch-game-info table tr td{
+    padding:2px;
+}
+#diamond {
+    float:left;
+    position:absolute;
+    right:0px;
+}
+.selected-pitch-man-on{
+    position:absolute;
+    width: 16px;
+    height: 16px;
+    border: 1px solid black;
+    background-color: white;
+}
+.selected-pitch-man-on.active{
+    background-color:gold;
+}
+#selected-pitch-man-on-first{
+    top:42px;
+    right:2px;
+}
+#selected-pitch-man-on-second{
+    top:2px;
+    right:42px;
+}
+#selected-pitch-man-on-third{
+    top:42px;
+    right:83px;
 }

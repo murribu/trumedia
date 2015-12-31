@@ -22,6 +22,12 @@ materialAdmin
             'ops': .9,
         }
         self.showReport = false;
+        self.pitchTypes = [];
+    
+        reportService.getPitchTypes().success(function(d){
+            self.pitchTypes = d;
+            self.filters.selectedPitchTypes = d;
+        });
         
         self.resetParameters = function(){
             $("#select-pitcher").select2('val', '');
@@ -39,6 +45,7 @@ materialAdmin
         };
 
         self.runReport = function(){
+            self.selectedPitch = false;
             self.zones = {};
             for(var r = 0; r < 5; r++){
                 for(var c = 0; c < 5; c++){
@@ -77,6 +84,7 @@ materialAdmin
             if ($.inArray(2015, self.filters.selectedSeasons) > -1){
                 filters.show2015 = 1;
             }
+            filters.pitch_types = self.filters.selectedPitchTypes;
             reportService.getPitches(filters).success(function(d){
                 if (d.error_code == '406'){
                     growlService.growl(d.message, 'danger');
@@ -89,6 +97,34 @@ materialAdmin
             .error(function(d){
                 growlService.growl('There was an error', 'danger');
             });
+        };
+    
+        self.selectPitch = function(p){
+            self.selectedPitch = p;
+            var myCanvas = document.getElementById("diamond");
+            var ctx = myCanvas.getContext("2d");
+            myCanvas.style.width='100px';
+            myCanvas.style.height='100px';
+
+            //Begin our drawing
+            ctx.beginPath();
+            ctx.moveTo(150,9);
+            ctx.lineTo(282,75);
+            ctx.lineTo(150,141);
+            ctx.lineTo(18,75);
+
+            //Define the style of the shape
+            ctx.lineWidth = 3;
+            ctx.fillStyle = "rgb(255, 255, 255)";
+            ctx.strokeStyle = "rgb(0, 0, 0)";
+
+            //Close the path
+            ctx.closePath();
+
+            //Fill the path with ourline and color
+            ctx.fill();
+            ctx.stroke();
+
         };
         
         self.populateZones = function(){

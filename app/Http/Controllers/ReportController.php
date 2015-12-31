@@ -10,17 +10,32 @@ use Redirect;
 use Session;
 
 use App\Models\Pitch;
+use App\Models\PitchType;
 use App\Models\Player;
 
 class ReportController extends Controller {
     private $default_min_pitch_count = 100;
     
+    function getPitchTypes(){
+        $pitch_types = PitchType::select('id', 'description', 'slug')->get();
+        
+        return $pitch_types;
+    }
+    
     function postPitches(){
         if (!Input::has('batter_id') && !Input::has('pitcher_id')){
             return array('error_code' => 406, 'message' => 'Please include either a batter or a pitcher (or both)');
         }
+        if (!Input::has('pitch_types')){
+            return array('error_code' => 406, 'message' => 'Please select at least one pitch type. Come on.');
+        }
         
-        $pitches = Pitch::whereRaw('1=1');
+        $pitch_types = array();
+        foreach(Input::get('pitch_types') as $pt){
+            $pitch_types[] = $pt['id'];
+        }
+        
+        $pitches = Pitch::whereIn('pitch_type_id', $pitch_types);
         if (Input::has('batter_id')){
             $pitches = $pitches->where('batter_id', Input::get('batter_id'));
         }
@@ -46,9 +61,7 @@ class ReportController extends Controller {
         if (Input::has('showInPlay') && Input::get('showInPlay') == '0'){
             $pitches = $pitches->where('plate_appearance_results.description', '<>', '');
         }
-        if (Input::get('show2013') == '1' && Input::get('show2014') == '1' && Input::get('show2015') == '1'){
-            //do nothing
-        }else{
+        if (!(Input::get('show2013') == '1' && Input::get('show2014') == '1' && Input::get('show2015') == '1')){
             $show2013 = Input::get('show2013');
             $show2014 = Input::get('show2014');
             $show2015 = Input::get('show2015');
@@ -67,10 +80,11 @@ class ReportController extends Controller {
         
         $pitches = $pitches
             ->leftJoin('pitch_results', 'pitch_results.id', '=', 'pitches.pitch_result_id')
+            ->leftJoin('pitch_types', 'pitch_types.id', '=', 'pitches.pitch_type_id')
             ->leftJoin('plate_appearance_results', 'plate_appearance_results.id', '=', 'pitches.pa_result_id')
             ->leftJoin('players as pitcher', 'pitcher.id', '=', 'pitches.pitcher_id')
             ->leftJoin('players as batter', 'batter.id', '=', 'pitches.batter_id')
-            ->selectRaw('pitches.id, game_date, px x, pz y, szt, szb, pa_result_id, pitch_results.ball, pitch_results.strike, pitch_results.description pitch_desc, plate_appearance_results.atbat, plate_appearance_results.hit, plate_appearance_results.onbase, plate_appearance_results.bases, plate_appearance_results.description pa_desc, batter.name batter_name, pitcher.name pitcher_name, concat(game_string, \'-\', batter_id, \'-\',  pitcher_id, \'-\', times_faced) abslug')
+            ->selectRaw('pitches.id, balls, strikes, outs, man_on_first, man_on_second, man_on_third, inning, side, visiting_team_current_runs vscore, home_team_current_runs hscore, visitor, home, (unix_timestamp(game_date)-(6*60*60))*1000 game_date, atbat_desc, px x, pz y, szt, szb, pa_result_id, pitch_results.ball, pitch_results.strike, pitch_results.description pitch_desc, plate_appearance_results.atbat, plate_appearance_results.hit, plate_appearance_results.onbase, plate_appearance_results.bases, plate_appearance_results.description pa_desc, pitch_types.description pitch_type, batter.name batter_name, pitcher.name pitcher_name, concat(game_string, \'-\', batter_id, \'-\',  pitcher_id, \'-\', times_faced) abslug')
             ->take(1000)
             ->get();
         

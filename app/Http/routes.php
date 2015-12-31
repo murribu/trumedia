@@ -30,6 +30,7 @@ Route::post('/report/catcherframing', 'ReportController@postCatcherFramingReport
 Route::post('/report/velocitydiff', 'ReportController@postVelocityDiffReport');
 Route::post('/report/pitches', 'ReportController@postPitches');
 
+Route::get('/pitchtypes', 'ReportController@getPitchTypes');
 /*
 |--------------------------------------------------------------------------
 | Application Routes

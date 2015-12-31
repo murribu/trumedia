@@ -34,4 +34,11 @@ materialAdmin
             });
             
         }
+        
+        this.getPitchTypes = function() {
+            return $http({
+                method: 'get',
+                url: "/pitchtypes"
+              });
+        };
     }])
