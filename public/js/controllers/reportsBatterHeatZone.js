@@ -1,22 +1,17 @@
 materialAdmin
-    .controller('reportsBatterHeatZoneCtrl', function($scope, $timeout, reportService) {
+    .controller('reportsBatterHeatZoneCtrl', function($scope, $timeout, reportService, growlService) {
         $scope.Math = window.Math;
         var self = this;
-        self.results = [];
-        self.activeTab = 'additional';
-        self.basicFilters = {
+        self.filters = {
+            'selectedPitcher': 0,
+            'selectedBatter': 0,
             'showBalls': true,
             'showStrikes': true,
             'showInPlay': true,
             'selectedSeasons': [2013,2014,2015],
-        }
-        self.additionalFilters = {
-            'selectedPitcher': 0,
-            'selectedBatter': 0,
         };
-        self.initialAdditionalFilters = jQuery.extend(true, {}, self.additionalFilters);
         self.runningReport = true;
-        self.selectedPoitn = [];
+        self.selectedPoint = [];
         self.dataPoints = [];
         self.zones = {};
         self.displayStat = 'avg';
@@ -26,18 +21,24 @@ materialAdmin
             'slg': .5,
             'ops': .9,
         }
+        self.showReport = false;
         
-        $scope.$watch('rctrl.additionalFilters.selectedBatter', function (newVal, oldVal) {
-            if (oldVal == newVal) return;
-            self.updateDataPoints();
-        }, true);
-        
-        $scope.$watch('rctrl.additionalFilters.selectedPitcher', function (newVal, oldVal) {
-            if (oldVal == newVal) return;
-            self.updateDataPoints();
-        }, true);
+        self.resetParameters = function(){
+            $("#select-pitcher").select2('val', '');
+            $("#select-batter").select2('val', '');
+            self.dataPoints = [];
+            self.showReport = false;
+            self.filters = {
+                'selectedPitcher': 0,
+                'selectedBatter': 0,
+                'showBalls': true,
+                'showStrikes': true,
+                'showInPlay': true,
+                'selectedSeasons': [2013,2014,2015],
+            };
+        };
 
-        self.updateDataPoints = function(){
+        self.runReport = function(){
             self.zones = {};
             for(var r = 0; r < 5; r++){
                 for(var c = 0; c < 5; c++){
@@ -52,15 +53,41 @@ materialAdmin
             }
             
             var filters = {};
-            if (self.additionalFilters.selectedPitcher != 0){
-                filters.pitcher_id = self.additionalFilters.selectedPitcher;
+            if (self.filters.selectedPitcher != 0){
+                filters.pitcher_id = self.filters.selectedPitcher;
             }
-            if (self.additionalFilters.selectedBatter != 0){
-                filters.batter_id = self.additionalFilters.selectedBatter;
+            if (self.filters.selectedBatter != 0){
+                filters.batter_id = self.filters.selectedBatter;
+            }
+            if (self.filters.showBalls == 0){
+                filters.showBalls = 0;
+            }
+            if (self.filters.showStrikes == 0){
+                filters.showStrikes = 0;
+            }
+            if (self.filters.showInPlay == 0){
+                filters.showInPlay = 0;
+            }
+            if ($.inArray(2013, self.filters.selectedSeasons) > -1){
+                filters.show2013 = 1;
+            }
+            if ($.inArray(2014, self.filters.selectedSeasons) > -1){
+                filters.show2014 = 1;
+            }
+            if ($.inArray(2015, self.filters.selectedSeasons) > -1){
+                filters.show2015 = 1;
             }
             reportService.getPitches(filters).success(function(d){
-               self.dataPoints = d.items;
-               self.populateZones();
+                if (d.error_code == '406'){
+                    growlService.growl(d.message, 'danger');
+                }else{
+                    self.dataPoints = d.items;
+                    self.populateZones();
+                    self.showReport = true;
+                }
+            })
+            .error(function(d){
+                growlService.growl('There was an error', 'danger');
             });
         };
         
@@ -91,19 +118,6 @@ materialAdmin
         }
         
         self.filterResults = function(r){
-            var d = new Date(parseInt(r.game_date.substring(0,4)), parseInt(r.game_date.substring(5,7)), parseInt(r.game_date.substring(8,10)),0,0,0,0);
-            if ($.inArray(d.getFullYear(), self.basicFilters.selectedSeasons) == -1){
-                return false;
-            }
-            if (!self.basicFilters.showBalls && r.ball == 1){
-                return false;
-            }
-            if (!self.basicFilters.showStrikes && r.strike == 1){
-                return false;
-            }
-            if (!self.basicFilters.showInPlay && r.pa_desc != ''){
-                return false;
-            }
             return true;
         }
         

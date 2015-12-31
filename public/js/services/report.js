@@ -29,7 +29,7 @@ materialAdmin
             return $http({
                 method: 'post',
                 url: "/report/pitches",
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                headers: {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded'},
                 data: $.param(sent)
             });
             

@@ -16,6 +16,10 @@ class ReportController extends Controller {
     private $default_min_pitch_count = 100;
     
     function postPitches(){
+        if (!Input::has('batter_id') && !Input::has('pitcher_id')){
+            return array('error_code' => 406, 'message' => 'Please include either a batter or a pitcher (or both)');
+        }
+        
         $pitches = Pitch::whereRaw('1=1');
         if (Input::has('batter_id')){
             $pitches = $pitches->where('batter_id', Input::get('batter_id'));
@@ -25,13 +29,49 @@ class ReportController extends Controller {
             $pitches = $pitches->where('pitcher_id', Input::get('pitcher_id'));
         }
         
+        if (Input::has('showBalls') && Input::get('showBalls') == '0'){
+            $pitches = $pitches->where(function($query){
+                $query->where('pitch_results.ball', 0);
+                $query->orWhere('plate_appearance_results.description', '<>', '');
+            });
+        }
+        
+        if (Input::has('showStrikes') && Input::get('showStrikes') == '0'){
+            $pitches = $pitches->where(function($query){
+                $query->where('pitch_results.strike', 0);
+                $query->orWhere('plate_appearance_results.description', '<>', '');
+            });
+        }
+        
+        if (Input::has('showInPlay') && Input::get('showInPlay') == '0'){
+            $pitches = $pitches->where('plate_appearance_results.description', '<>', '');
+        }
+        if (Input::get('show2013') == '1' && Input::get('show2014') == '1' && Input::get('show2015') == '1'){
+            //do nothing
+        }else{
+            $show2013 = Input::get('show2013');
+            $show2014 = Input::get('show2014');
+            $show2015 = Input::get('show2015');
+            $pitches = $pitches->where(function($query) use($show2013,$show2014,$show2015){
+                if ($show2013 == '1'){
+                    $query->orWhereBetween('game_date', array('2013-1-1', '2014-1-1'));
+                }
+                if ($show2014 == '1'){
+                    $query->orWhereBetween('game_date', array('2014-1-1', '2015-1-1'));
+                }
+                if ($show2015 == '1'){
+                    $query->orWhereBetween('game_date', array('2015-1-1', '2016-1-1'));
+                }
+            });
+        }
+        
         $pitches = $pitches
             ->leftJoin('pitch_results', 'pitch_results.id', '=', 'pitches.pitch_result_id')
             ->leftJoin('plate_appearance_results', 'plate_appearance_results.id', '=', 'pitches.pa_result_id')
             ->leftJoin('players as pitcher', 'pitcher.id', '=', 'pitches.pitcher_id')
             ->leftJoin('players as batter', 'batter.id', '=', 'pitches.batter_id')
             ->selectRaw('pitches.id, game_date, px x, pz y, szt, szb, pa_result_id, pitch_results.ball, pitch_results.strike, pitch_results.description pitch_desc, plate_appearance_results.atbat, plate_appearance_results.hit, plate_appearance_results.onbase, plate_appearance_results.bases, plate_appearance_results.description pa_desc, batter.name batter_name, pitcher.name pitcher_name, concat(game_string, \'-\', batter_id, \'-\',  pitcher_id, \'-\', times_faced) abslug')
-            ->take(400)
+            ->take(1000)
             ->get();
         
         return array(

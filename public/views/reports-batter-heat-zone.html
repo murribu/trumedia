@@ -4,33 +4,34 @@
             <h2>Customize Your Report</h2>
         </div>
         <div class="card-body card-padding">
-            <ul class="tab-nav tn-justified" style="margin-bottom: 24px;">
-                <li ng-class="{'active': rctrl.activeTab == 'basic'}" class="btn-wave">
-                    <a ng-click="rctrl.activeTab = 'basic'" href="#/reports/heat-zone">Basic Filters</a>
-                </li>
-                <li ng-class="{'active': rctrl.activeTab == 'additional'}" class="btn-wave">
-                    <a ng-click="rctrl.activeTab = 'additional'" href="#/reports/heat-zone">Select Player(s)</a>
-                </li>
-            </ul>
-            <div ng-show="rctrl.activeTab == 'basic'">
+            <div>
+                <div class="row">
+                    <div class="col-md-3">
+                        Select a pitcher<br><select id="select-pitcher" ng-model="rctrl.filters.selectedPitcher" style="width:150px"></select>
+                    </div>
+                    <div class="col-md-3">
+                        Select a batter<br>
+                        <select id="select-batter" ng-model="rctrl.filters.selectedBatter" style="width:150px"></select>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-sm-4 checkbox">
                         <p class="f-500 c-black m-b-5">Show...</p>
                         <div class="form-group">
-                            <label>Balls
-                                <input type="checkbox" ng-model="rctrl.basicFilters.showBalls" >
+                            <label><div class="heat-zone-pitch heat-zone-ball"></div>&nbsp;&nbsp;&nbsp;Balls
+                                <input type="checkbox" ng-model="rctrl.filters.showBalls" >
                                 <i class="input-helper"></i>
                             </label>
                         </div>
                         <div class="form-group">
-                            <label>Strikes
-                                <input type="checkbox" ng-model="rctrl.basicFilters.showStrikes">
+                            <label><div class="heat-zone-pitch heat-zone-strike"></div>&nbsp;&nbsp;&nbsp;Strikes
+                                <input type="checkbox" ng-model="rctrl.filters.showStrikes">
                                 <i class="input-helper"></i>
                             </label>
                         </div>
                         <div class="form-group">
-                            <label>Balls In Play
-                                <input type="checkbox" ng-model="rctrl.basicFilters.showInPlay">
+                            <label><div class="heat-zone-pitch heat-zone-in-play"></div>&nbsp;&nbsp;&nbsp;Last Pitch of AB
+                                <input type="checkbox" ng-model="rctrl.filters.showInPlay">
                                 <i class="input-helper"></i>
                             </label>
                         </div>
@@ -38,27 +39,20 @@
                     <div class="col-sm-2" style="margin-top:10px;">
                         <p class="f-500 c-black m-b-5">Season</p>
                         <div class="form-group">
-                            <select multiple="true" ng-model="rctrl.basicFilters.selectedSeasons" ng-options="n for n in rctrl.range(2013,2015)" style="width:80px;"></select>
+                            <select multiple="true" ng-model="rctrl.filters.selectedSeasons" ng-options="n for n in rctrl.range(2013,2015)" style="width:80px;"></select>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div ng-show="rctrl.activeTab == 'additional'">
                 <div class="row">
-                    <div class="col-md-3">
-                        Select a pitcher<br><select id="select-pitcher" ng-model="rctrl.additionalFilters.selectedPitcher" style="width:150px"></select>
-                    </div>
-                    <div class="col-md-3">
-                        Select a batter<br>
-                        <select id="select-batter" ng-model="rctrl.additionalFilters.selectedBatter" style="width:150px"></select>
-                    </div>
+                    <div class="btn btn-default" style="float:left;" ng-click="rctrl.resetParameters()">Reset</div>
+                    <div class="btn btn-primary" style="float:right;" ng-click="rctrl.runReport()">Run Report</div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card">
+    <div class="card" ng-show="rctrl.showReport">
         <div class="card-header">
-            <h2>Batter Heat Zone</h2> <small>Results are limited to 400 pitches</small>
+            <h2>Batter Heat Zone</h2> <small>Results are limited to 1000 pitches</small>
         </div>
         <div class="card-body heat-zone-card">
             <div class="selected-pitcher"></div>

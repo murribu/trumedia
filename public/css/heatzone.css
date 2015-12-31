@@ -1,11 +1,11 @@
 .heat-zone-card{
-    width:800px;
+    width:100%;
     height:500px;
 }
 .heat-zone-container{
     width:800px;
-    height:500px;
-    left:250px;
+    height:700px;
+    left:calc(50% - 250px);
     position:relative;
 }
 .heat-zone-hot{
@@ -29,7 +29,7 @@
     background-color:blue;
     border-radius: 5px;
     z-index:5;
-    opacity:0.6;
+    opacity:0.5;
 }
 .heat-zone-section .heat-zone-avg{
     font-weight: bold;
