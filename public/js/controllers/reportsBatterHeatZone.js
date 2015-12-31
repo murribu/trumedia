@@ -44,6 +44,7 @@ materialAdmin
         self.pitchTypes = [];
         self.pitchResults = [];
         self.plateAppearanceResults = [];
+        self.view = 'default'; //as opposed to viewing an AtBat
     
         reportService.getPlateAppearanceResults().success(function(d){
             self.plateAppearanceResults = d;
@@ -86,17 +87,15 @@ materialAdmin
             $("#select-batter").select2('val', '');
             self.dataPoints = [];
             self.showReport = false;
-            self.filters = {
-                'selectedPitcher': 0,
-                'selectedBatter': 0,
-                'showBalls': true,
-                'showStrikes': true,
-                'showInPlay': true,
-                'selectedSeasons': [2013,2014,2015],
-            };
-            self.filters.selectedPitchTypes = $.extend(true, {}, self.pitchTypes);
-            self.filters.selectedPitchResults = $.extend(true, {}, self.pitchResults);
-            self.filters.selectedPlateAppearanceResults = $.extend(true, {}, self.plateAppearanceResults);
+            self.filters.selectedPitchTypes = self.pitchTypes;
+            self.filters.selectedPitchResults = self.pitchResults;
+            self.filters.selectedPlateAppearanceResults = self.plateAppearanceResults;
+            self.filters.selectedPitcher = 0;
+            self.filters.selectedBatter = 0;
+            self.filters.showBalls = true;
+            self.filters.showStrikes = true;
+            self.filters.showInPlay = true;
+            self.filters.selectedSeasons = [2013,2014,2015];
         };
 
         self.runReport = function(){
@@ -146,6 +145,7 @@ materialAdmin
                 if (d.error_code == '406'){
                     growlService.growl(d.message, 'danger');
                 }else{
+                    self.view = 'default';
                     self.dataPoints = d.items;
                     self.populateZones();
                     self.showReport = true;
@@ -155,6 +155,38 @@ materialAdmin
                 growlService.growl('There was an error', 'danger');
             });
         };
+    
+        self.viewAB = function(slug){
+            self.selectedPitch = false;
+            self.zones = {};
+            for(var r = 0; r < 5; r++){
+                for(var c = 0; c < 5; c++){
+                    self.zones[r + '-' + c] = {
+                        'hits': 0,
+                        'atbats': 0,
+                        'bases' : 0,
+                        'onbases' : 0,
+                        'plateappearances': 0,
+                    }
+                }
+            }
+            
+            var filters = {};
+            filters.slug = slug;
+            reportService.getPitches(filters).success(function(d){
+                if (d.error_code == '406'){
+                    growlService.growl(d.message, 'danger');
+                }else{
+                    self.view = 'ab';
+                    self.dataPoints = d.items;
+                    self.populateZones();
+                    self.showReport = true;
+                }
+            })
+            .error(function(d){
+                growlService.growl('There was an error', 'danger');
+            });
+        }
     
         self.selectPitch = function(p){
             self.selectedPitch = p;

@@ -29,8 +29,11 @@
     background-color:blue;
     border-radius: 5px;
     z-index:5;
-    opacity:0.5;
     cursor: pointer;
+    line-height: 2;
+}
+.heat-zone-pitch.see-through{
+    opacity:0.5;
 }
 .heat-zone-section .heat-zone-avg, .heat-zone-section .heat-zone-obp, .heat-zone-section .heat-zone-slg, .heat-zone-section .heat-zone-ops{
     font-weight: bold;
@@ -115,7 +118,7 @@
 }
 #selected-pitch{
     width: 650px;
-    height: 112px;
+    height: 120px;
     left: calc(50% - 250px);
     position: relative;
 }
@@ -178,7 +181,7 @@
     height: 180px;
     width: 50px;
     right: 22px;
-    bottom: -73px;
+    bottom: -65px;
 }
 #selected-pitch-ball-path div{
     border-right: 2px solid black;

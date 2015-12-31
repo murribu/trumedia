@@ -138,8 +138,7 @@
                             <td>{{rctrl.selectedPitch.pitch_desc}} - {{rctrl.selectedPitch.pa_desc}}</td>
                         </tr>
                         <tr>
-                            <td>AB Slug:</td>
-                            <td>{{rctrl.selectedPitch.abslug}}</td>
+                            <td colspan="2"><div class="btn btn-primary" ng-click="rctrl.viewAB(rctrl.selectedPitch.abslug)" ng-show="rctrl.view != 'ab'">View PA</div></td>
                         </tr>
                     </table>
                 </div>
@@ -189,9 +188,9 @@
                         {{((rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].onbases / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].plateappearances)+(rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].bases / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats)) | number:3}}</div>
                 </div>
                 <div 
-                    ng-repeat="point in rctrl.dataPoints | filter:rctrl.filterResults" 
+                    ng-repeat="point in rctrl.dataPoints | filter:rctrl.filterResults track by $index" 
                     class="heat-zone-pitch" 
-                    ng-class="{'heat-zone-in-play' : point.pa_desc != '', 'heat-zone-ball' : point.ball == 1, 'heat-zone-strike' : point.strike == 1}"
+                    ng-class="{'heat-zone-in-play' : point.pa_desc != '', 'heat-zone-ball' : point.ball == 1, 'heat-zone-strike' : point.strike == 1, 'see-through' : rctrl.view != 'ab'}"
                     ng-click="rctrl.selectPitch(point)"
                     style="
                     top:{{396-(240*((point.y-point.szb)/(point.szt-point.szb)))}}px;
@@ -200,7 +199,7 @@
                     data-y="{{point.y}}"
                     data-szt="{{point.szt}}"
                     data-szb="{{point.szb}}"
-                    data-id="{{point.id}}"></div>
+                    data-id="{{point.id}}"><div ng-show="rctrl.view == 'ab'">{{$index + 1}}</div></div>
             </div>
         </div>
     </div>
