@@ -32,7 +32,7 @@
     opacity:0.5;
     cursor: pointer;
 }
-.heat-zone-section .heat-zone-avg{
+.heat-zone-section .heat-zone-avg, .heat-zone-section .heat-zone-obp, .heat-zone-section .heat-zone-slg, .heat-zone-section .heat-zone-ops{
     font-weight: bold;
     font-size: large;
     text-align:center;
@@ -115,10 +115,18 @@
 }
 #selected-pitch{
     width: 650px;
-    height: 114px;
+    height: 112px;
     left: calc(50% - 250px);
     position: relative;
+}
+#selected-pitch.ball{
     border:1px solid green;
+}
+#selected-pitch.strike{
+    border:1px solid red;
+}
+#selected-pitch.in-play{
+    border:1px solid blue;
 }
 .selected-pitch-game-info{
     position:relative;
@@ -130,6 +138,13 @@
 }
 .selected-pitch-game-info table tr td{
     padding:2px;
+}
+#selected-pitch-atbat-desc{
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+    text-align: center;
 }
 #diamond {
     float:left;

@@ -41,4 +41,18 @@ materialAdmin
                 url: "/pitchtypes"
               });
         };
+        
+        this.getPitchResults = function() {
+            return $http({
+                method: 'get',
+                url: "/pitchresults"
+              });
+        };
+        
+        this.getPlateAppearanceResults = function() {
+            return $http({
+                method: 'get',
+                url: "/plateappearanceresults"
+              });
+        };
     }])

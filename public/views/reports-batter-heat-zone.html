@@ -6,10 +6,10 @@
         <div class="card-body card-padding">
             <div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         Select a pitcher<br><select id="select-pitcher" ng-model="rctrl.filters.selectedPitcher" style="width:150px"></select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         Select a batter<br>
                         <select id="select-batter" ng-model="rctrl.filters.selectedBatter" style="width:150px"></select>
                     </div>
@@ -30,7 +30,7 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <label><div class="heat-zone-pitch heat-zone-in-play"></div>&nbsp;&nbsp;&nbsp;Last Pitch of AB
+                            <label><div class="heat-zone-pitch heat-zone-in-play"></div>&nbsp;&nbsp;&nbsp;Last Pitch of PA
                                 <input type="checkbox" ng-model="rctrl.filters.showInPlay">
                                 <i class="input-helper"></i>
                             </label>
@@ -45,7 +45,19 @@
                     <div class="col-sm-2" style="margin-top:10px;">
                         <p class="f-500 c-black m-b-5">Pitch Types</p>
                         <div class="form-group">
-                            <select multiple="true" ng-model="rctrl.filters.selectedPitchTypes" ng-options="p.description for p in rctrl.pitchTypes" style="width:140px;"></select>
+                            <select multiple="true" ng-model="rctrl.filters.selectedPitchTypes" ng-options="p.description for p in rctrl.pitchTypes" style="width:140px;height:200px;"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2" style="margin-top:10px;">
+                        <p class="f-500 c-black m-b-5">Pitch Results</p>
+                        <div class="form-group">
+                            <select multiple="true" ng-model="rctrl.filters.selectedPitchResults" ng-options="p.description for p in rctrl.pitchResults" style="width:140px;height:200px;"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2" style="margin-top:10px;">
+                        <p class="f-500 c-black m-b-5">PA Results</p>
+                        <div class="form-group">
+                            <select multiple="true" ng-model="rctrl.filters.selectedPlateAppearanceResults" ng-options="p.description for p in rctrl.plateAppearanceResults" style="width:140px;height:200px;"></select>
                         </div>
                     </div>
                 </div>
@@ -58,12 +70,21 @@
     </div>
     <div class="card" ng-show="rctrl.showReport">
         <div class="card-header">
-            <h2>Batter Heat Zone</h2> <small>Results are limited to 1000 pitches</small>
+            <h2>Batter Heat Zone</h2> <small>From the catcher's perspective</small><br><small>Results are limited to 1000 pitches</small>
+            <div>
+                <div class="row">
+                    <div class="col-md-4" style="padding-top:20px;">
+                        <div style="font-size:larger;font-weight:bold;">Heat Zones based on</div>
+                        <select id="heat-zone-stat" style="width:150px" ng-model="rctrl.displayStat" ng-options="stat.label for stat in rctrl.statsHotLevels">
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
         <div ng-show="rctrl.dataPoints.length == 0" id="no-results">No Results</div>
         <div ng-show="rctrl.dataPoints.length == 1000" id="truncated">The data was truncated at 1000 pitches</div>
         <div ng-show="rctrl.selectedPitch" id="selected-pitch-container">
-            <div id="selected-pitch">
+            <div id="selected-pitch" ng-class="{'in-play' : rctrl.selectedPitch.atbat_desc != '', 'strike' : rctrl.selectedPitch.strike == '1', 'ball' : rctrl.selectedPitch.ball == '1'}">
                 <div class="selected-pitch-game-info">
                     <table>
                         <tr>
@@ -71,7 +92,7 @@
                             <td>{{rctrl.selectedPitch.vscore}}</td>
                         </tr>
                         <tr>
-                            <td>@{{rctrl.selectedPitch.home}}</td>
+                            <td>{{rctrl.selectedPitch.home}}</td>
                             <td>{{rctrl.selectedPitch.hscore}}</td>
                         </tr>
                         <tr>
@@ -106,11 +127,11 @@
                     <table>
                         <tr>
                             <td>Pitcher:</td>
-                            <td>{{rctrl.selectedPitch.pitcher_name}}</td>
+                            <td><a href="/#/players/{{rctrl.selectedPitch.pitcher_id}}">{{rctrl.selectedPitch.pitcher_name}}</a></td>
                         </tr>
                         <tr>
                             <td>Batter:</td>
-                            <td>{{rctrl.selectedPitch.batter_name}}</td>
+                            <td><a href="/#/players/{{rctrl.selectedPitch.batter_id}}">{{rctrl.selectedPitch.batter_name}}</a></td>
                         </tr>
                         <tr>
                             <td>Result:</td>
@@ -120,11 +141,9 @@
                             <td>AB Slug:</td>
                             <td>{{rctrl.selectedPitch.abslug}}</td>
                         </tr>
-                        <tr>
-                            <td colspan="2">{{rctrl.selectedPitch.atbat_desc}}</td>
-                        </tr>
                     </table>
                 </div>
+                <div id="selected-pitch-atbat-desc">{{rctrl.selectedPitch.atbat_desc}}</div>
                 <canvas id="diamond"></canvas>
                 <div id="selected-pitch-man-on-first" class="selected-pitch-man-on" ng-class="{'active' : rctrl.selectedPitch.man_on_first == '1'}"></div>
                 <div id="selected-pitch-man-on-second" class="selected-pitch-man-on" ng-class="{'active' : rctrl.selectedPitch.man_on_second == '1'}"></div>
@@ -138,15 +157,29 @@
                 <div 
                     ng-repeat="n in rctrl.range(0,24)" 
                     class="heat-zone-section heat-row-{{Math.floor(n/5)}} heat-col-{{n % 5}}" 
-                    ng-class="{'heat-zone-hot' : rctrl.displayStat == 'avg' && (rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].hits / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats) > rctrl.hotLevels.avg}"
+                    ng-class="{'heat-zone-hot' : (rctrl.displayStat.slug == 'avg' && (rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].hits / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats) > rctrl.displayStat.hot)
+                    || (rctrl.displayStat.slug == 'obp' && (rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].onbases / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].plateappearances) > rctrl.displayStat.hot)
+                    || (rctrl.displayStat.slug == 'slg' && (rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].bases / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats) > rctrl.displayStat.hot)
+                    || (rctrl.displayStat.slug == 'ops' && ((rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].onbases / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].plateappearances)+(rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].bases / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats) > rctrl.displayStat.hot))}"
                     ng-data-hits="{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].hits}}"
                     ng-data-atbats="{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats}}"
                     ng-data-bases="{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].bases}}"
                     ng-data-onbases="{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].onbases}}"
                     ng-data-plateappearances="{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].plateappearances}}">
                     <div class="heat-zone-avg"
-                        ng-show="rctrl.displayStat == 'avg' && rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats > 0">
-                        {{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].hits}} - {{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats}}</div>
+                        ng-show="rctrl.displayStat.slug == 'avg' && rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats > 0">
+                        <div ng-show="rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats < 11">{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].hits}} - {{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats}}</div>
+                        <div ng-show="rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats > 10">{{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].hits / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats | number:3}}</div>
+                    </div>
+                    <div class="heat-zone-obp"
+                        ng-show="rctrl.displayStat.slug == 'obp' && rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].plateappearances > 0">
+                        {{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].onbases / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].plateappearances | number:3}}</div>
+                    <div class="heat-zone-slg"
+                        ng-show="rctrl.displayStat.slug == 'slg' && rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats > 0">
+                        {{rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].bases / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats | number:3}}</div>
+                    <div class="heat-zone-ops"
+                        ng-show="rctrl.displayStat.slug == 'ops' && rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats > 0">
+                        {{((rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].onbases / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].plateappearances)+(rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].bases / rctrl.zones[Math.floor(n/5) + '-' + (n % 5)].atbats)) | number:3}}</div>
                 </div>
                 <div 
                     ng-repeat="point in rctrl.dataPoints | filter:rctrl.filterResults" 

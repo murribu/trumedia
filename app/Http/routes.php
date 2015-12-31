@@ -31,17 +31,5 @@ Route::post('/report/velocitydiff', 'ReportController@postVelocityDiffReport');
 Route::post('/report/pitches', 'ReportController@postPitches');
 
 Route::get('/pitchtypes', 'ReportController@getPitchTypes');
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
-|
-*/
-
-Route::group(['middleware' => ['web']], function () {
-    //
-});
+Route::get('/pitchresults', 'ReportController@getPitchResults');
+Route::get('/plateappearanceresults', 'ReportController@getPlateAppearanceResults');

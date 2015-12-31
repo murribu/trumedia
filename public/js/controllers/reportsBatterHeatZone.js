@@ -9,25 +9,77 @@ materialAdmin
             'showStrikes': true,
             'showInPlay': true,
             'selectedSeasons': [2013,2014,2015],
+            'selectedPlateAppearanceResults': [],
+            'selectedPitchTypes': [],
+            'selectedPitchResults': [],
         };
         self.runningReport = true;
         self.selectedPoint = [];
         self.dataPoints = [];
         self.zones = {};
-        self.displayStat = 'avg';
-        self.hotLevels = {
-            'avg': .3,
-            'obp': .4,
-            'slg': .5,
-            'ops': .9,
-        }
+        self.statsHotLevels = [
+            {
+                slug: 'avg',
+                hot: .3,
+                label: 'Batting Average',
+            },
+            {
+                slug: 'obp',
+                hot: .4,
+                label: 'On Base %',
+            },
+            {
+                slug: 'slg',
+                hot: .5,
+                label: 'Slugging %',
+            },
+            {
+                slug: 'ops',
+                hot: .9,
+                label: 'On Base Plus Slugging %',
+            },
+        ]
+        self.displayStat = self.statsHotLevels[1];
         self.showReport = false;
         self.pitchTypes = [];
+        self.pitchResults = [];
+        self.plateAppearanceResults = [];
+    
+        reportService.getPlateAppearanceResults().success(function(d){
+            self.plateAppearanceResults = d;
+            self.filters.selectedPlateAppearanceResults = d;
+        });
     
         reportService.getPitchTypes().success(function(d){
             self.pitchTypes = d;
             self.filters.selectedPitchTypes = d;
         });
+    
+        reportService.getPitchResults().success(function(d){
+            self.pitchResults = d;
+            self.filters.selectedPitchResults = d;
+        });
+        
+        $scope.$watch('rctrl.filters.selectedPlateAppearanceResults', function (newVal, oldVal) {
+            if (self.filters.selectedPlateAppearanceResults.length != self.plateAppearanceResults.length){
+                self.filters.showBalls = false;
+                self.filters.showStrikes = false;
+            }
+        }, true);
+        
+        $scope.$watch('rctrl.filters.showBalls', function (newVal, oldVal) {
+            if (self.filters.selectedPlateAppearanceResults.length != self.plateAppearanceResults.length && self.filters.showBalls){
+                growlService.growl('You must select all PA Results in order to select \'Show Balls\'', 'inverse');
+                self.filters.showBalls = false;
+            }
+        }, true);
+        
+        $scope.$watch('rctrl.filters.showStrikes', function (newVal, oldVal) {
+            if (self.filters.selectedPlateAppearanceResults.length != self.plateAppearanceResults.length && self.filters.showStrikes){
+                growlService.growl('You must select all PA Results in order to select \'Show Balls\'', 'inverse');
+                self.filters.showStrikes = false;
+            }
+        }, true);
         
         self.resetParameters = function(){
             $("#select-pitcher").select2('val', '');
@@ -42,6 +94,9 @@ materialAdmin
                 'showInPlay': true,
                 'selectedSeasons': [2013,2014,2015],
             };
+            self.filters.selectedPitchTypes = $.extend(true, {}, self.pitchTypes);
+            self.filters.selectedPitchResults = $.extend(true, {}, self.pitchResults);
+            self.filters.selectedPlateAppearanceResults = $.extend(true, {}, self.plateAppearanceResults);
         };
 
         self.runReport = function(){
@@ -85,6 +140,8 @@ materialAdmin
                 filters.show2015 = 1;
             }
             filters.pitch_types = self.filters.selectedPitchTypes;
+            filters.pitch_results = self.filters.selectedPitchResults;
+            filters.plate_appearance_results = self.filters.selectedPlateAppearanceResults;
             reportService.getPitches(filters).success(function(d){
                 if (d.error_code == '406'){
                     growlService.growl(d.message, 'danger');

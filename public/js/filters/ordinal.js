@@ -11,7 +11,7 @@ materialAdmin
         return number + 'nd'
       } else if (lastDigit === 3){
         return number + 'rd'
-      } else if (lastDigit > 3){
+      } else if (lastDigit > 3 || lastDigit == 0){
         return number + 'th'
       }
     }
