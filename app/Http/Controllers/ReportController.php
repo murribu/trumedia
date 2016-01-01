@@ -116,7 +116,7 @@ class ReportController extends Controller {
         }
         
         if (Input::has('showInPlay') && Input::get('showInPlay') == '0'){
-            $pitches = $pitches->where('plate_appearance_results.description', '<>', '');
+            $pitches = $pitches->where('plate_appearance_results.description', '');
         }
         if (!(Input::get('show2013') == '1' && Input::get('show2014') == '1' && Input::get('show2015') == '1')){
             $show2013 = Input::get('show2013');
@@ -142,6 +142,7 @@ class ReportController extends Controller {
             ->leftJoin('players as pitcher', 'pitcher.id', '=', 'pitches.pitcher_id')
             ->leftJoin('players as batter', 'batter.id', '=', 'pitches.batter_id')
             ->selectRaw($selectPhrase)
+            ->orderBy('pitches.id')
             ->take(1000)
             ->get();
         

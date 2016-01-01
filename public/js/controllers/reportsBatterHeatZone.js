@@ -81,17 +81,25 @@ materialAdmin
                 self.filters.showStrikes = false;
             }
         }, true);
+    
+        self.resetPitcher = function(){
+            $("#select-pitcher").select2('val', '');
+            self.filters.selectedPitcher = 0;
+        }
+        
+        self.resetBatter = function(){
+            $("#select-batter").select2('val', '');
+            self.filters.selectedBatter = 0;
+        }
         
         self.resetParameters = function(){
-            $("#select-pitcher").select2('val', '');
-            $("#select-batter").select2('val', '');
+            self.resetPitcher();
+            self.resetBatter();
             self.dataPoints = [];
             self.showReport = false;
             self.filters.selectedPitchTypes = self.pitchTypes;
             self.filters.selectedPitchResults = self.pitchResults;
             self.filters.selectedPlateAppearanceResults = self.plateAppearanceResults;
-            self.filters.selectedPitcher = 0;
-            self.filters.selectedBatter = 0;
             self.filters.showBalls = true;
             self.filters.showStrikes = true;
             self.filters.showInPlay = true;

@@ -118,7 +118,7 @@
 }
 #selected-pitch{
     width: 650px;
-    height: 120px;
+    height: 137px;
     left: calc(50% - 250px);
     position: relative;
 }
@@ -181,7 +181,7 @@
     height: 180px;
     width: 50px;
     right: 22px;
-    bottom: -65px;
+    bottom: -48px;
 }
 #selected-pitch-ball-path div{
     border-right: 2px solid black;
@@ -196,7 +196,7 @@
     height: 40px;
     width: 55px;
     right: 22px;
-    bottom: 39px;
+    bottom: 56px;
     font-weight: bold;
     text-align: center;
 }

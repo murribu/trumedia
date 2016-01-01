@@ -48,11 +48,13 @@ materialAdmin
                 case 'C':
                     $(".btn-filter-players").removeClass('btn-primary').addClass('btn-default');
                     $("#btnShowOnlyCatchers").removeClass('btn-default').addClass('btn-primary');
+                    self.currentPage = 1;
                     self.filterPosition = 'C';
                     break;
                 case 'P':
                     $(".btn-filter-players").removeClass('btn-primary').addClass('btn-default');
                     $("#btnShowOnlyPitchers").removeClass('btn-default').addClass('btn-primary');
+                    self.currentPage = 1;
                     self.filterPosition = 'P';
                     break;
                 default:
