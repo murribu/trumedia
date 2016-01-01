@@ -39,16 +39,22 @@ class ReportController extends Controller {
     function postPitches(){
         $selectPhrase = 'pitches.id, balls, strikes, outs, man_on_first, man_on_second, man_on_third, inning, side, visiting_team_current_runs vscore, home_team_current_runs hscore, visitor, home, batted_ball_angle, batted_ball_distance, (unix_timestamp(game_date)-(6*60*60))*1000 game_date, atbat_desc, px x, pz y, szt, szb, pa_result_id, pitch_results.ball, pitch_results.strike, pitch_results.description pitch_desc, plate_appearance_results.atbat, plate_appearance_results.hit, plate_appearance_results.onbase, plate_appearance_results.bases, plate_appearance_results.description pa_desc, pitch_types.description pitch_type, batter.name batter_name, pitches.batter_id, pitcher.name pitcher_name, pitches.pitcher_id, concat(game_string, \'-\', batter_id, \'-\',  pitcher_id, \'-\', times_faced) abslug';
         
-        if (Input::has('slug')){
-            $pitches = Pitch::leftJoin('pitch_results', 'pitch_results.id', '=', 'pitches.pitch_result_id')
-            ->leftJoin('pitch_types', 'pitch_types.id', '=', 'pitches.pitch_type_id')
-            ->leftJoin('plate_appearance_results', 'plate_appearance_results.id', '=', 'pitches.pa_result_id')
-            ->leftJoin('players as pitcher', 'pitcher.id', '=', 'pitches.pitcher_id')
-            ->leftJoin('players as batter', 'batter.id', '=', 'pitches.batter_id')
-            ->whereRaw('concat(game_string, \'-\', batter_id, \'-\',  pitcher_id, \'-\', times_faced) = ?', array(Input::get('slug')))
-                ->selectRaw($selectPhrase)
-                ->orderBy('pitches.id')
-                ->get();
+        if (Input::has('slug') && Input::has('id')){
+            $subquery = " (select * from pitches where id between (? - 30) and (? + 30)) ";
+            
+            $from = " from ".$subquery." pitches 
+                left join pitch_results on pitch_results.id = pitches.pitch_result_id 
+                left join pitch_types on pitch_types.id = pitches.pitch_type_id 
+                left join plate_appearance_results on plate_appearance_results.id = pitches.pa_result_id 
+                left join players as pitcher on pitcher.id = pitches.pitcher_id 
+                left join players as batter on batter.id = pitches.batter_id";
+            
+            $where = " where concat(game_string, '-', batter_id, '-',  pitcher_id, '-', times_faced) = ? order by `pitches`.`id` asc;";
+            
+            $query = "select ".$selectPhrase.$from.$where;
+            
+
+            $pitches = DB::select(DB::raw($query), array(Input::get('id'), Input::get('id'), Input::get('slug')));
             
             return array(
                 'view' => 'ab',

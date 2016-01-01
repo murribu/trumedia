@@ -173,7 +173,7 @@
                                     <td>{{rctrl.selectedPitch.pa_desc == "" ? rctrl.selectedPitch.pitch_desc : rctrl.selectedPitch.pa_desc}}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><div class="btn btn-primary" ng-click="rctrl.viewAB(rctrl.selectedPitch.abslug)" ng-show="rctrl.view != 'ab'">View PA</div></td>
+                                    <td colspan="2"><div class="btn btn-primary" ng-click="rctrl.viewAB(rctrl.selectedPitch.id, rctrl.selectedPitch.abslug)" ng-show="rctrl.view != 'ab'">View PA</div></td>
                                 </tr>
                             </table>
                         </div>

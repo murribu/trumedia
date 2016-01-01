@@ -178,7 +178,7 @@ materialAdmin
             });
         };
     
-        self.viewAB = function(slug){
+        self.viewAB = function(id, slug){
             self.runningReport = true;
             self.dataPoints = [];
             self.zones = {};
@@ -196,6 +196,7 @@ materialAdmin
             
             var filters = {};
             filters.slug = slug;
+            filters.id = id;
             reportService.getPitches(filters).success(function(d){
                 if (d.error_code == '406'){
                     growlService.growl(d.message, 'danger');
