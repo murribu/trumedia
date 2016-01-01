@@ -1,10 +1,10 @@
 materialAdmin
-    .controller('reportsBatterHeatZoneCtrl', function($scope, $timeout, reportService, growlService) {
+    .controller('reportsBatterHeatZoneCtrl', function($location, $scope, $timeout, playerService, reportService, growlService) {
         $scope.Math = window.Math;
         var self = this;
         self.filters = {
-            'selectedPitcher': 0,
-            'selectedBatter': 0,
+            'selectedPitcher': null,
+            'selectedBatter': null,
             'showBalls': true,
             'showStrikes': true,
             'showInPlay': true,
@@ -45,6 +45,8 @@ materialAdmin
         self.pitchResults = [];
         self.plateAppearanceResults = [];
         self.view = 'default'; //as opposed to viewing an AtBat
+        self.batters = [];
+        self.pitchers = [];
     
         reportService.getPlateAppearanceResults().success(function(d){
             self.plateAppearanceResults = d;
@@ -60,6 +62,16 @@ materialAdmin
             self.pitchResults = d;
             self.filters.selectedPitchResults = d;
         });
+        /*
+        if ($location.path().substr(19,999) != ''){
+            playerService.getPlayer($location.path().substr(19,999)).success(function(d){
+                if (("," + d.positions + ",").indexOf(",P,") > -1){
+                    self.filters.selectedPitcher = d.id;
+                }else{
+                    self.filters.selectedBatter = d.id;
+                }
+            });
+        }*/
         
         $scope.$watch('rctrl.filters.selectedPlateAppearanceResults', function (newVal, oldVal) {
             if (self.filters.selectedPlateAppearanceResults.length != self.plateAppearanceResults.length){
@@ -83,13 +95,11 @@ materialAdmin
         }, true);
     
         self.resetPitcher = function(){
-            $("#select-pitcher").select2('val', '');
-            self.filters.selectedPitcher = 0;
+            self.filters.selectedPitcher = null;
         }
         
         self.resetBatter = function(){
-            $("#select-batter").select2('val', '');
-            self.filters.selectedBatter = 0;
+            self.filters.selectedBatter = null;
         }
         
         self.resetParameters = function(){
@@ -123,11 +133,11 @@ materialAdmin
             }
             
             var filters = {};
-            if (self.filters.selectedPitcher != 0){
-                filters.pitcher_id = self.filters.selectedPitcher;
+            if (self.filters.selectedPitcher){
+                filters.pitcher_id = self.filters.selectedPitcher.id;
             }
-            if (self.filters.selectedBatter != 0){
-                filters.batter_id = self.filters.selectedBatter;
+            if (self.filters.selectedBatter){
+                filters.batter_id = self.filters.selectedBatter.id;
             }
             if (self.filters.showBalls == 0){
                 filters.showBalls = 0;
@@ -286,71 +296,19 @@ materialAdmin
             }
             return input;
         };
+    
+        self.refreshBatters = function(search){
+            playerService.getBatter(search).then(function(d){
+                self.batters = d.data.items;
+            });
+        };
+    
+        self.refreshPitchers = function(search){
+            playerService.getPitcher(search).then(function(d){
+                self.pitchers = d.data.items;
+            });
+        };
         
-        
-        $("#select-batter").select2({
-          ajax: {
-            url: "/players/batters",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-              return {
-                q: params.term
-              };
-            },
-            processResults: function (data, params) {
-              // parse the results into the format expected by Select2
-              // since we are using custom formatting functions we do not need to
-              // alter the remote JSON data, except to indicate that infinite
-              // scrolling can be used
-              params.page = params.page || 1;
-         
-              return {
-                results: data.items,
-                pagination: {
-                  more: (params.page * 30) < data.total_count
-                }
-              };
-            },
-            cache: true
-          },
-          escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-          minimumInputLength: 1,
-          templateResult: formatRepo, // omitted for brevity, see the source of this page
-          templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
-        });
-        
-        $("#select-pitcher").select2({
-          ajax: {
-            url: "/players/pitchers",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-              return {
-                q: params.term
-              };
-            },
-            processResults: function (data, params) {
-              // parse the results into the format expected by Select2
-              // since we are using custom formatting functions we do not need to
-              // alter the remote JSON data, except to indicate that infinite
-              // scrolling can be used
-              params.page = params.page || 1;
-         
-              return {
-                results: data.items,
-                pagination: {
-                  more: (params.page * 30) < data.total_count
-                }
-              };
-            },
-            cache: true
-          },
-          escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-          minimumInputLength: 1,
-          templateResult: formatRepo, // omitted for brevity, see the source of this page
-          templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
-        });
     });
     
 function formatRepoSelection (repo) {

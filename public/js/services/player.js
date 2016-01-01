@@ -49,4 +49,18 @@ materialAdmin
                 url: "/player/" + id + '/battedballdistance'
               });
         };
+        
+        this.getBatter = function(q){
+            return $http({
+                method: 'get',
+                url: "/players/batters?q=" + q
+            });
+        };
+        
+        this.getPitcher = function(q){
+            return $http({
+                method: 'get',
+                url: "/players/pitchers?q=" + q
+            });
+        };
     }])

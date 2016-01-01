@@ -31,6 +31,7 @@ class PlayerController extends Controller {
         $players = Player::whereRaw('id in (select player_id from player_positions where position_id <> 1)')
                     ->whereRaw('name like ?', array('%'.Input::get('q').'%'))
                     ->limit(50)
+                    ->orderBy('name')
                     ->get();
                     
         return array(
@@ -46,6 +47,7 @@ class PlayerController extends Controller {
                         $query->orWhereRaw('id not in (select player_id from player_positions)');
                     })
                     ->whereRaw('name like ?', array('%'.Input::get('q').'%'))
+                    ->orderBy('name')
                     ->limit(50)
                     ->get();
                     

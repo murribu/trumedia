@@ -203,3 +203,7 @@
     font-weight: bold;
     text-align: center;
 }
+
+span.ui-select-match-text{
+    margin-top:7px;
+}

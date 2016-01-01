@@ -6,20 +6,36 @@
         <div class="card-body card-padding">
             <div>
                 <div class="row">
-                    <div class="col-md-2">
-                        Select a pitcher<br><select id="select-pitcher" ng-model="rctrl.filters.selectedPitcher" style="width:150px"></select>
-                        
+                    <div class="col-md-3">
+                        <ui-select ng-model="rctrl.filters.selectedPitcher"
+                                 theme="bootstrap"
+                                 reset-search-input="false"
+                                 style="width: 200px;">
+                            <ui-select-match placeholder="All pitchers">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="p in rctrl.pitchers"
+                                     refresh="rctrl.refreshPitchers($select.search)"
+                                     refresh-delay="0">
+                              <div ng-bind="p.name"></div>
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                     <div class="col-md-2">
-                        <br>
                         <div class="btn btn-default btn-sm" ng-click="rctrl.resetPitcher()" ng-show="rctrl.filters.selectedPitcher != 0">All Pitchers</div>
                     </div>
-                    <div class="col-md-2">
-                        Select a batter<br>
-                        <select id="select-batter" ng-model="rctrl.filters.selectedBatter" style="width:150px"></select>
+                    <div class="col-md-3">
+                        <ui-select ng-model="rctrl.filters.selectedBatter"
+                                 theme="bootstrap"
+                                 reset-search-input="false"
+                                 style="width: 200px;">
+                            <ui-select-match placeholder="All batters">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="p in rctrl.batters"
+                                     refresh="rctrl.refreshBatters($select.search)"
+                                     refresh-delay="0">
+                              <div ng-bind="p.name"></div>
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                     <div class="col-md-2">
-                        <br>
                         <div class="btn btn-default btn-sm" ng-click="rctrl.resetBatter()" ng-show="rctrl.filters.selectedBatter != 0">All Batters</div>
                     </div>
                 </div>
@@ -27,19 +43,19 @@
                     <div class="col-sm-3 checkbox">
                         <p class="f-500 c-black m-b-5">Show...</p>
                         <div class="form-group">
-                            <label><div class="heat-zone-pitch heat-zone-ball"></div>&nbsp;&nbsp;&nbsp;Balls
+                            <label><div class="heat-zone-pitch heat-zone-ball" style="z-index:0"></div>&nbsp;&nbsp;&nbsp;Balls
                                 <input type="checkbox" ng-model="rctrl.filters.showBalls" >
                                 <i class="input-helper"></i>
                             </label>
                         </div>
                         <div class="form-group">
-                            <label><div class="heat-zone-pitch heat-zone-strike"></div>&nbsp;&nbsp;&nbsp;Strikes
+                            <label><div class="heat-zone-pitch heat-zone-strike" style="z-index:0"></div>&nbsp;&nbsp;&nbsp;Strikes
                                 <input type="checkbox" ng-model="rctrl.filters.showStrikes">
                                 <i class="input-helper"></i>
                             </label>
                         </div>
                         <div class="form-group">
-                            <label><div class="heat-zone-pitch heat-zone-in-play"></div>&nbsp;&nbsp;&nbsp;Last Pitch of PA
+                            <label><div class="heat-zone-pitch heat-zone-in-play" style="z-index:0"></div>&nbsp;&nbsp;&nbsp;Last Pitch of PA
                                 <input type="checkbox" ng-model="rctrl.filters.showInPlay">
                                 <i class="input-helper"></i>
                             </label>

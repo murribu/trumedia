@@ -77,7 +77,7 @@ materialAdmin
             })
             
             .state ('reports.heat-zone', {
-                url: '/heat-zone',
+                url: '/heat-zone/:player_id',
                 templateUrl: 'views/reports-batter-heat-zone.html',
                 resolve: {
                     loadPlugin: function($ocLazyLoad) {
@@ -87,6 +87,13 @@ materialAdmin
                                 insertBefore: '#app-level',
                                 files: [
                                     'css/heatzone.css',
+                                    'css/select.min.css',
+                                ]
+                            },
+                            {
+                                name: 'vendors',
+                                files: [
+                                    'js/select.min.js',
                                 ]
                             },
                         ])
