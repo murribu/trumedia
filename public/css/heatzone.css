@@ -110,26 +110,29 @@
     top: 135px;
     left: calc(50% - 132px);
 }
-#selected-pitch-container{
+.selected-pitch-container{
     position:absolute;
     width:100%;
     height:100px;
     top:0px;
 }
-#selected-pitch{
+.selected-pitch{
     width: 650px;
     height: 137px;
     left: calc(50% - 250px);
     position: relative;
 }
-#selected-pitch.ball{
+.selected-pitch.ball{
     border:1px solid green;
 }
-#selected-pitch.strike{
+.selected-pitch.strike{
     border:1px solid red;
 }
-#selected-pitch.in-play{
+.selected-pitch.in-play{
     border:1px solid blue;
+}
+.selected-pitch.no-pitch{
+    border:1px solid black;
 }
 .selected-pitch-game-info{
     position:relative;
@@ -142,7 +145,7 @@
 .selected-pitch-game-info table tr td{
     padding:2px;
 }
-#selected-pitch-atbat-desc{
+.selected-pitch-atbat-desc{
     position: absolute;
     width: 100%;
     bottom: 0px;

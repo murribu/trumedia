@@ -93,8 +93,11 @@
         </div>
         <div ng-show="rctrl.dataPoints.length == 0 && !rctrl.runningReport" id="no-results">No Results</div>
         <div ng-show="rctrl.dataPoints.length == 1000" id="truncated">Results are limited to the first 1000 pitches</div>
-        <div ng-show="rctrl.selectedPitch" id="selected-pitch-container">
-            <div id="selected-pitch" ng-class="{'in-play' : rctrl.selectedPitch.atbat_desc != '', 'strike' : rctrl.selectedPitch.strike == '1', 'ball' : rctrl.selectedPitch.ball == '1'}">
+        <div ng-hide="rctrl.selectedPitch" class="selected-pitch-container">
+            <div class="selected-pitch no-pitch"><div class="selected-pitch-atbat-desc">Click on a Pitch for more info.</div></div>
+        </div>
+        <div ng-show="rctrl.selectedPitch" class="selected-pitch-container">
+            <div class="selected-pitch" ng-class="{'in-play' : rctrl.selectedPitch.atbat_desc != '', 'strike' : rctrl.selectedPitch.strike == '1', 'ball' : rctrl.selectedPitch.ball == '1'}">
                 <div class="selected-pitch-game-info">
                     <table>
                         <tr>
@@ -152,7 +155,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id="selected-pitch-atbat-desc">{{rctrl.selectedPitch.atbat_desc}}</div>
+                <div class="selected-pitch-atbat-desc">{{rctrl.selectedPitch.atbat_desc}}</div>
                 <canvas id="diamond"></canvas>
                 <div id="selected-pitch-man-on-first" class="selected-pitch-man-on" ng-class="{'active' : rctrl.selectedPitch.man_on_first == '1'}"></div>
                 <div id="selected-pitch-man-on-second" class="selected-pitch-man-on" ng-class="{'active' : rctrl.selectedPitch.man_on_second == '1'}"></div>
