@@ -76,7 +76,7 @@ materialAdmin
                 templateUrl: 'views/reports-pitcher-velocity-difference.html'
             })
             
-            .state ('reports.heat-zone', {
+            .state ('heat-zone', {
                 url: '/heat-zone/:player_id',
                 templateUrl: 'views/reports-batter-heat-zone.html',
                 resolve: {
@@ -86,6 +86,8 @@ materialAdmin
                                 name: 'css',
                                 insertBefore: '#app-level',
                                 files: [
+                                    'vendors/bower_components/nouislider/jquery.nouislider.css',
+                                    'vendors/bower_components/chosen/chosen.min.css',
                                     'css/heatzone.css',
                                     'css/select.min.css',
                                 ]
@@ -93,6 +95,9 @@ materialAdmin
                             {
                                 name: 'vendors',
                                 files: [
+                                    'vendors/bower_components/nouislider/jquery.nouislider.min.js',
+                                    'vendors/bower_components/chosen/chosen.jquery.js',
+                                    'vendors/bower_components/angular-chosen-localytics/chosen.js',
                                     'js/select.min.js',
                                 ]
                             },

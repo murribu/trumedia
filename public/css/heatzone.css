@@ -204,6 +204,7 @@
     text-align: center;
 }
 
-span.ui-select-match-text{
-    margin-top:7px;
+.ui-select-toggle{
+    text-transform: none !important;
+    padding-top: 7px !important;
 }

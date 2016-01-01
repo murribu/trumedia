@@ -62,16 +62,16 @@ materialAdmin
             self.pitchResults = d;
             self.filters.selectedPitchResults = d;
         });
-        /*
-        if ($location.path().substr(19,999) != ''){
-            playerService.getPlayer($location.path().substr(19,999)).success(function(d){
+        
+        if ($location.path().substr(11,999) != ''){
+            playerService.getPlayer($location.path().substr(11,999)).success(function(d){
                 if (("," + d.positions + ",").indexOf(",P,") > -1){
-                    self.filters.selectedPitcher = d.id;
+                    self.filters.selectedPitcher = d;
                 }else{
-                    self.filters.selectedBatter = d.id;
+                    self.filters.selectedBatter = d;
                 }
             });
-        }*/
+        }
         
         $scope.$watch('rctrl.filters.selectedPlateAppearanceResults', function (newVal, oldVal) {
             if (self.filters.selectedPlateAppearanceResults.length != self.plateAppearanceResults.length){

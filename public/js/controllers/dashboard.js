@@ -4,10 +4,6 @@ materialAdmin
         self.players = [];
         self.reports = [
         {
-            slug: 'heat-zone',
-            name: 'Heat Zone'
-        },
-        {
             slug: 'catcher-framing',
             name: 'Catcher Framing'
         },
