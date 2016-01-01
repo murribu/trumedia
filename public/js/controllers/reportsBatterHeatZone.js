@@ -5,10 +5,10 @@ materialAdmin
         self.filters = {
             'selectedPitcher': null,
             'selectedBatter': null,
-            'showBalls': true,
-            'showStrikes': true,
+            'showBalls': false,
+            'showStrikes': false,
             'showInPlay': true,
-            'selectedSeasons': [2013,2014,2015],
+            'selectedSeasons': [2015],
             'selectedPlateAppearanceResults': [],
             'selectedPitchTypes': [],
             'selectedPitchResults': [],
@@ -41,6 +41,7 @@ materialAdmin
         ]
         self.displayStat = self.statsHotLevels[0];
         self.showReport = false;
+        self.pitchTypeTotals = {};
         self.pitchTypes = [];
         self.pitchResults = [];
         self.plateAppearanceResults = [];
@@ -241,6 +242,14 @@ materialAdmin
         };
         
         self.populateZones = function(){
+            self.pitchTypeTotals = $.extend(true, [], self.pitchTypes);
+            for (t in self.pitchTypeTotals){
+                self.pitchTypeTotals[t].plateappearances = 0;
+                self.pitchTypeTotals[t].atbats = 0;
+                self.pitchTypeTotals[t].hits = 0;
+                self.pitchTypeTotals[t].bases = 0;
+                self.pitchTypeTotals[t].onbases = 0;
+            }
             for(p in self.dataPoints){
                 for(var r = 0; r < 5; r++){
                     for(var c = 0; c < 5; c++){
@@ -253,6 +262,17 @@ materialAdmin
                                 self.zones[r + '-' + c].plateappearances++;
                             }
                         }
+                    }
+                }
+                for(t in self.pitchTypeTotals){
+                    if (self.pitchTypeTotals[t].description == self.dataPoints[p].pitch_type){
+                        if (self.dataPoints[p].pa_desc != ""){
+                            self.pitchTypeTotals[t].plateappearances++;
+                        }
+                        self.pitchTypeTotals[t].atbats += self.dataPoints[p].atbat;
+                        self.pitchTypeTotals[t].hits += self.dataPoints[p].hit;
+                        self.pitchTypeTotals[t].bases += self.dataPoints[p].bases;
+                        self.pitchTypeTotals[t].onbases += self.dataPoints[p].onbase;
                     }
                 }
             }

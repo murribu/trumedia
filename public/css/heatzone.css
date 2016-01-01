@@ -99,16 +99,16 @@
     border-right:2px solid black;
 }
 #no-results{
-    font-size: large;
+    font-size: x-large;
     position: absolute;
-    top: 135px;
-    left: calc(50% - 18px);
+    top: 168px;
+    left: calc(50% - 31px);
 }
 #truncated{
-    font-size: large;
+    font-size: x-large;
     position: absolute;
-    top: 135px;
-    left: calc(50% - 132px);
+    top: 168px;
+    left: calc(50% - 201px);
 }
 .selected-pitch-container{
     position:absolute;
@@ -208,8 +208,15 @@
     font-weight: bold;
     text-align: center;
 }
-
 .ui-select-toggle{
     text-transform: none !important;
     padding-top: 7px !important;
+}
+#pitch-results{
+    position: absolute;
+    top: 170px;
+}
+#pitch-results td, #pitch-results th{
+    padding:2px;
+    border-top: 1px solid black;
 }

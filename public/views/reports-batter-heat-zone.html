@@ -101,7 +101,7 @@
             </div>
             <div class="card" ng-show="rctrl.showReport">
                 <div class="card-header">
-                    <h2>Batter Heat Zone</h2> <small>From the catcher's perspective</small><br><small>Results are limited to 1000 pitches</small>
+                    <small>From the catcher's perspective</small><br><small>Results are limited to 1000 pitches</small>
                     <div>
                         <div class="row">
                             <div class="col-md-4" style="padding-top:20px;">
@@ -162,11 +162,11 @@
                             <table>
                                 <tr>
                                     <td>Pitcher:</td>
-                                    <td><a href="/#/players/{{rctrl.selectedPitch.pitcher_id}}">{{rctrl.selectedPitch.pitcher_name}}</a></td>
+                                    <td><a href="/#/heat-zone/{{rctrl.selectedPitch.pitcher_id}}">{{rctrl.selectedPitch.pitcher_name}}</a></td>
                                 </tr>
                                 <tr>
                                     <td>Batter:</td>
-                                    <td><a href="/#/players/{{rctrl.selectedPitch.batter_id}}">{{rctrl.selectedPitch.batter_name}}</a></td>
+                                    <td><a href="/#/heat-zone/{{rctrl.selectedPitch.batter_id}}">{{rctrl.selectedPitch.batter_name}}</a></td>
                                 </tr>
                                 <tr>
                                     <td>Result:</td>
@@ -198,8 +198,37 @@
                     </div>
                 </div>
                 <div class="card-body heat-zone-card">
-                    <div class="selected-pitcher"></div>
-                    <div class="selected-batter"></div>
+                    <div id="pitch-results" ng-hide="rctrl.view == 'ab'">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Pitch Type</th>
+                                    <th>PA</th>
+                                    <th>AB</th>
+                                    <th>AVG</th>
+                                    <th>OPS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="pt in rctrl.pitchTypeTotals | orderBy:['-plateappearances','description']">
+                                    <td>{{pt.description}}</td>
+                                    <td>{{pt.plateappearances}}</td>
+                                    <td>{{pt.atbats}}</td>
+                                    <td>{{pt.hits / pt.atbats | number:3}}</td>
+                                    <td>{{((pt.onbases / pt.plateappearances) + (pt.bases / (pt.atbats + 0.000001))) | number:3}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>Totals</td>
+                                    <td>PA</td>
+                                    <td>AB</td>
+                                    <td>AVG</td>
+                                    <td>OPS</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                     <div class="heat-zone-container">
                         <div 
                             ng-repeat="n in rctrl.range(0,24)" 
