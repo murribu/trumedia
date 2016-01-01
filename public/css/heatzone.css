@@ -179,20 +179,25 @@
     top:42px;
     right:83px;
 }
-#selected-pitch-ball-path{
+.selected-pitch-ball-path{
     position: absolute;
     height: 180px;
     width: 50px;
     right: 22px;
     bottom: -48px;
 }
-#selected-pitch-ball-path div{
-    border-right: 2px solid black;
+.selected-pitch-ball-path div{
     border-radius: 50%;
     height: 50%;
     width: 50%;
-    left: 10px;
     position: absolute;
+    left: 10px;
+}
+#selected-pitch-ball-path-left div{
+    border-right: 2px solid black;
+}
+#selected-pitch-ball-path-right div{
+    border-left: 2px solid black;
 }
 #selected-pitch-ball-distance{
     position: absolute;

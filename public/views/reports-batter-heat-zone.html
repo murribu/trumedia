@@ -182,7 +182,13 @@
                         <div id="selected-pitch-man-on-first" class="selected-pitch-man-on" ng-class="{'active' : rctrl.selectedPitch.man_on_first == '1'}"></div>
                         <div id="selected-pitch-man-on-second" class="selected-pitch-man-on" ng-class="{'active' : rctrl.selectedPitch.man_on_second == '1'}"></div>
                         <div id="selected-pitch-man-on-third" class="selected-pitch-man-on" ng-class="{'active' : rctrl.selectedPitch.man_on_third == '1'}"></div>
-                        <div id="selected-pitch-ball-path" ng-show="rctrl.selectedPitch.batted_ball_angle != 0"
+                        <div class="selected-pitch-ball-path" id="selected-pitch-ball-path-left" ng-show="rctrl.selectedPitch.batted_ball_angle < 0"
+                        style="-ms-transform: rotate({{rctrl.selectedPitch.batted_ball_angle}}deg);
+                            -webkit-transform: rotate({{rctrl.selectedPitch.batted_ball_angle}}deg);
+                            transform: rotate({{rctrl.selectedPitch.batted_ball_angle}}deg);">
+                            <div></div>
+                        </div>
+                        <div class="selected-pitch-ball-path" id="selected-pitch-ball-path-right" ng-show="rctrl.selectedPitch.batted_ball_angle > 0"
                         style="-ms-transform: rotate({{rctrl.selectedPitch.batted_ball_angle}}deg);
                             -webkit-transform: rotate({{rctrl.selectedPitch.batted_ball_angle}}deg);
                             transform: rotate({{rctrl.selectedPitch.batted_ball_angle}}deg);">
