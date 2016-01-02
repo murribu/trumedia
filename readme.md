@@ -1,27 +1,30 @@
-## Laravel PHP Framework
+## Cory Martin's entry for the 2015/16 TruMedia MLB Hackathon
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+TruMedia Networks sponsored a [hackathon](http://www.trumedianetworks.com/hackathon/) in December 2015. In this project, you will find the code I used for my entry.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+I chose [Laravel](http://laravel.com/) as the back-end PHP Framework, and [Angular](https://angularjs.org/) as the front end Javascript Framework. I also used a template, purchased from [WrapBootstrap](https://wrapbootstrap.com/) as a visual framework.
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+## Database Structure and Seeding
 
-## Official Documentation
+The database/migrations folder contains information which defines the database structure for the project. The database/seeds folder contains information about processing the Raw Data that was sent to seed the project. This Raw Data contained over 2.1M rows of data, each describing one pitch from the 2013, 2014, and 2015 MLB Regular Season and Post Season.
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+## Features
 
-## Contributing
+### Heat Zone
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+The Heat Zone is a tool where a user can select a batter and/or a pitcher and view the pitches they threw (or saw as a batter). The results are shown on a graphical representation of the Strike Zone and highlights areas where the batter performed well. The user can click on a pitch to view more information about it, or compare the outcomes from different pitch types within the result set.
 
-## Security Vulnerabilities
+### Reports
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+The Catcher Framing report compares how well different catchers frame their pitches. In this report they are scored with the following metric: (Strikes gained - Strikes Lost) / (Pitches Received). In the "Additional Filters" tab, the user can modify the parameters to see (e.g.) which catcher was the best framer with two outs and a full count in extra innings, etc.
 
-### License
+The Pitcher Velocity Difference report measures how wide the gap is between a pitcher's Fastball and his Changeup. Similarly, the user can change the parameters to see which pitchers are best, situationally.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
+## Hosting
+
+As of January 2, 2016, the project is hosted at [http://trumedia.corymmartin.com/](http://trumedia.corymmartin.com/). Feel free to peruse it there.
+
+## License
+
+Per the specifications of the Hackathon contest, this project is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT), bearing in mind that it uses a proprietary template from [WrapBootstrap](https://wrapbootstrap.com/).
