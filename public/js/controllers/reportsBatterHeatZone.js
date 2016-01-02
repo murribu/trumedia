@@ -111,10 +111,10 @@ materialAdmin
             self.filters.selectedPitchTypes = self.pitchTypes;
             self.filters.selectedPitchResults = self.pitchResults;
             self.filters.selectedPlateAppearanceResults = self.plateAppearanceResults;
-            self.filters.showBalls = true;
-            self.filters.showStrikes = true;
+            self.filters.showBalls = false;
+            self.filters.showStrikes = false;
             self.filters.showInPlay = true;
-            self.filters.selectedSeasons = [2013,2014,2015];
+            self.filters.selectedSeasons = [2015];
         };
 
         self.runReport = function(){
@@ -250,7 +250,14 @@ materialAdmin
                 self.pitchTypeTotals[t].hits = 0;
                 self.pitchTypeTotals[t].bases = 0;
                 self.pitchTypeTotals[t].onbases = 0;
+                self.pitchTypeTotals[t].strikeouts = 0;
             }
+            self.pitchTypeTotals.plateappearances = 0;
+            self.pitchTypeTotals.atbats = 0;
+            self.pitchTypeTotals.hits = 0;
+            self.pitchTypeTotals.bases = 0;
+            self.pitchTypeTotals.onbases = 0;
+            self.pitchTypeTotals.strikeouts = 0;
             for(p in self.dataPoints){
                 for(var r = 0; r < 5; r++){
                     for(var c = 0; c < 5; c++){
@@ -269,11 +276,20 @@ materialAdmin
                     if (self.pitchTypeTotals[t].description == self.dataPoints[p].pitch_type){
                         if (self.dataPoints[p].pa_desc != ""){
                             self.pitchTypeTotals[t].plateappearances++;
+                            self.pitchTypeTotals.plateappearances++;
+                        }
+                        if (self.dataPoints[p].pa_result_id == "9"){
+                            self.pitchTypeTotals[t].strikeouts++;
+                            self.pitchTypeTotals.strikeouts++;
                         }
                         self.pitchTypeTotals[t].atbats += self.dataPoints[p].atbat;
                         self.pitchTypeTotals[t].hits += self.dataPoints[p].hit;
                         self.pitchTypeTotals[t].bases += self.dataPoints[p].bases;
                         self.pitchTypeTotals[t].onbases += self.dataPoints[p].onbase;
+                        self.pitchTypeTotals.atbats += self.dataPoints[p].atbat;
+                        self.pitchTypeTotals.hits += self.dataPoints[p].hit;
+                        self.pitchTypeTotals.bases += self.dataPoints[p].bases;
+                        self.pitchTypeTotals.onbases += self.dataPoints[p].onbase;
                     }
                 }
             }
