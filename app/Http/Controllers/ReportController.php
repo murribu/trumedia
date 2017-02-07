@@ -124,11 +124,12 @@ class ReportController extends Controller {
         if (Input::has('showInPlay') && Input::get('showInPlay') == '0'){
             $pitches = $pitches->where('plate_appearance_results.description', '');
         }
-        if (!(Input::get('show2013') == '1' && Input::get('show2014') == '1' && Input::get('show2015') == '1')){
+        if (!(Input::get('show2013') == '1' && Input::get('show2014') == '1' && Input::get('show2015') == '1' && Input::get('show2016') == '1')){
             $show2013 = Input::get('show2013');
             $show2014 = Input::get('show2014');
             $show2015 = Input::get('show2015');
-            $pitches = $pitches->where(function($query) use($show2013,$show2014,$show2015){
+            $show2016 = Input::get('show2016');
+            $pitches = $pitches->where(function($query) use($show2013,$show2014,$show2015,$show2016){
                 if ($show2013 == '1'){
                     $query->orWhereBetween('game_date', array('2013-1-1', '2014-1-1'));
                 }
@@ -137,6 +138,9 @@ class ReportController extends Controller {
                 }
                 if ($show2015 == '1'){
                     $query->orWhereBetween('game_date', array('2015-1-1', '2016-1-1'));
+                }
+                if ($show2015 == '1'){
+                    $query->orWhereBetween('game_date', array('2016-1-1', '2017-1-1'));
                 }
             });
         }

@@ -17,7 +17,7 @@ class PitchesSeeder extends Seeder{
     public function run(){
         $there_is_more = RawDatum::select('id')->whereNull('processed_utc')->first();
         if ($there_is_more){
-            $raw_data = RawDatum::whereNull('processed_utc')->take(4000)->get();
+            $raw_data = RawDatum::whereNull('processed_utc')->take(40000)->get();
             foreach($raw_data as $raw_datum){
                 $batter = Player::where('mlb_id', $raw_datum->batter_id)->first();
                 if (!$batter){
