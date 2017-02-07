@@ -139,7 +139,7 @@ class ReportController extends Controller {
                 if ($show2015 == '1'){
                     $query->orWhereBetween('game_date', array('2015-1-1', '2016-1-1'));
                 }
-                if ($show2015 == '1'){
+                if ($show2016 == '1'){
                     $query->orWhereBetween('game_date', array('2016-1-1', '2017-1-1'));
                 }
             });
