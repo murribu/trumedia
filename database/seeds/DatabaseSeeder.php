@@ -12,6 +12,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $lockfile_str = "/tmp/pitches_seeder.lock";
+
+        ini_set("max_execution_time", 6000);
+        ini_set("memory_limit", "-1");
+
+        if(!file_exists($lockfile_str)){
+            $lockfile = fopen($lockfile_str, "w");
+        }else{
+            // echo "LockFile exists. Exiting...";
+            exit;
+        }
+        
         Model::unguard();
 
         $this->call('PitchResultsSeeder');
@@ -29,5 +41,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('pitches table seeded');
         
         Model::reguard();
+        
+        unlink($lockfile_str);
     }
 }

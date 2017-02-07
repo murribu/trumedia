@@ -8,7 +8,7 @@ materialAdmin
             'showBalls': false,
             'showStrikes': false,
             'showInPlay': true,
-            'selectedSeasons': [2015],
+            'selectedSeasons': [2016],
             'selectedPlateAppearanceResults': [],
             'selectedPitchTypes': [],
             'selectedPitchResults': [],
@@ -114,7 +114,7 @@ materialAdmin
             self.filters.showBalls = false;
             self.filters.showStrikes = false;
             self.filters.showInPlay = true;
-            self.filters.selectedSeasons = [2015];
+            self.filters.selectedSeasons = [2016];
         };
 
         self.runReport = function(){
@@ -157,6 +157,9 @@ materialAdmin
             }
             if ($.inArray(2015, self.filters.selectedSeasons) > -1){
                 filters.show2015 = 1;
+            }
+            if ($.inArray(2016, self.filters.selectedSeasons) > -1){
+                filters.show2016 = 1;
             }
             filters.pitch_types = self.filters.selectedPitchTypes;
             filters.pitch_results = self.filters.selectedPitchResults;
